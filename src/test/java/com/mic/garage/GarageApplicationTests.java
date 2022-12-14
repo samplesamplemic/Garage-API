@@ -45,13 +45,13 @@ class GarageApplicationTests {
 
     @Test
     void testResponseBodyNotFoundException() throws IOException {
-        String id = "3";
+        Long id = Long.valueOf(3);
         url = "http://localhost:8080/garage/moto/" + id;
         httpResponse = HttpClientBuilder.create().build().execute(new HttpGet(url));
         HttpEntity entity = httpResponse.getEntity();
         String resBody = EntityUtils.toString(entity, "UTF-8");
-        throw new VehicleNotFoundException();
-        Assertions.assertEquals("Could not find vehicle " + id, resBody);
+        Exception ex = new VehicleNotFoundException(id);
+        Assertions.assertEquals(ex.getMessage(), resBody);
 
     }
 }
