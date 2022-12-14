@@ -8,8 +8,9 @@ public class VehicleNotFoundAdvice {
 
     @ResponseBody
     @ExceptionHandler(VehicleNotFoundException.class)
+    //ResponseStatusException
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String vehicleNotFoundHandler(VehicleNotFoundException ex){
+    String vehicleNotFoundHandler(VehicleNotFoundException ex) {
         return ex.getMessage();
     }
 }

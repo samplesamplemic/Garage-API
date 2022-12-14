@@ -2,6 +2,7 @@ package com.mic.garage.controller;
 
 import com.mic.garage.model.Vehicle;
 import com.mic.garage.exception.VehicleNotFoundException;
+import com.mic.garage.repository.MotoRepository;
 import com.mic.garage.repository.VehicleRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class VehicleController {
     }
 
     @GetMapping("/vehicles")
-    List<Vehicle> all(){
+    List<Vehicle> all() {
         return repository.findAll();
     }
 
@@ -26,18 +27,18 @@ public class VehicleController {
     }
 
     @GetMapping("/vehicles/{id}")
-    Vehicle one(@PathVariable Long id){
+    Vehicle one(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new VehicleNotFoundException(id));
     }
 
     @PutMapping("/vehicles/{id}")
-    Vehicle replaceVehicle(@RequestBody Vehicle newVehicle, @PathVariable Long id){
+    Vehicle replaceVehicle(@RequestBody Vehicle newVehicle, @PathVariable Long id) {
         return repository.findById(id)
                 .map(vehicle -> {
                     vehicle.setBrand(newVehicle.getBrand());
-                    vehicle.setCarYear(newVehicle.getCarYear());
-                    vehicle.setCarEngine(newVehicle.getCarEngine());
+                    vehicle.setVehicleYear(newVehicle.getVehicleYear());
+                    vehicle.setEngine(newVehicle.getEngine());
                     return repository.save(vehicle);
                 })
                 .orElseGet(() -> {
@@ -47,7 +48,7 @@ public class VehicleController {
     }
 
     @DeleteMapping("/vehicles/{id}")
-    void deleteVehicle(@PathVariable Long id){
+    void deleteVehicle(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }

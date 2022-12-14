@@ -5,26 +5,25 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-@Entity
-@Table(name = "Vehicles")
-public class Vehicle implements Serializable {
+//@Entity
+//@Table(name = "Vehicles")
+@MappedSuperclass
+public class Vehicle {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String brand;
-    private int carYear;
-    private int carEngine;
-
+    private int vehicleYear;
+    private int engine;
 
     public Vehicle() {
     }
 
-    public Vehicle(String brand, int carYear, int carEngine) {
-        this.carYear = carYear;
-        this.carEngine = carEngine;
+    public Vehicle(String brand, int vehicleYear, int engine) {
+        this.vehicleYear = vehicleYear;
+        this.engine = engine;
         this.brand = brand;
     }
-
 
 
     public Long getId() {
@@ -35,20 +34,20 @@ public class Vehicle implements Serializable {
         this.id = id;
     }
 
-    public int getCarYear() {
-        return carYear;
+    public int getVehicleYear() {
+        return vehicleYear;
     }
 
-    public void setCarYear(int carYear) {
-        this.carYear = carYear;
+    public void setVehicleYear(int vehicleYear) {
+        this.vehicleYear = vehicleYear;
     }
 
-    public int getCarEngine() {
-        return carEngine;
+    public int getEngine() {
+        return engine;
     }
 
-    public void setCarEngine(int carEngine) {
-        this.carEngine = carEngine;
+    public void setEngine(int engine) {
+        this.engine = engine;
     }
 
     public String getBrand() {
@@ -64,8 +63,8 @@ public class Vehicle implements Serializable {
     public String toString() {
         return "Vehicle{" +
                 "id=" + id +
-                ", carYear=" + carYear +
-                ", carEngine=" + carEngine +
+                ", year=" + vehicleYear +
+                ", engine capacity=" + engine +
                 ", brand='" + brand + '\'' +
                 '}';
     }
