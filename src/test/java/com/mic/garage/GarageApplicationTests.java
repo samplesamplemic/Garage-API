@@ -31,7 +31,14 @@ class GarageApplicationTests {
     void setUp() {
     }
 
-    @Test                                      //an error of type i/o;
+    @Test
+    void testStatusCodeFound() throws IOException {
+        url = "http://localhost:8080/garage/moto";
+        httpResponse = HttpClientBuilder.create().build().execute(new HttpGet(url));
+        Assertions.assertEquals(httpResponse.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
+    }
+
+    @Test                     //an error of type i/o;
     void testStatusCodeNotFound() throws IOException {
         //HttpUriRequest: Extended version of the HttpRequest interface that
         //provides convenience methods to access request properties such as request URI and method type.
@@ -40,18 +47,16 @@ class GarageApplicationTests {
         url = "http://localhost:8080/garage/moto/" + id;
         httpResponse = HttpClientBuilder.create().build().execute(new HttpGet(url));
         Assertions.assertEquals(httpResponse.getStatusLine().getStatusCode(), HttpStatus.SC_NOT_FOUND);
-
     }
 
     @Test
     void testResponseBodyNotFoundException() throws IOException {
-        Long id = Long.valueOf(3);
+        Long id = Long.valueOf(30);
         url = "http://localhost:8080/garage/moto/" + id;
         httpResponse = HttpClientBuilder.create().build().execute(new HttpGet(url));
         HttpEntity entity = httpResponse.getEntity();
         String resBody = EntityUtils.toString(entity, "UTF-8");
         Exception ex = new VehicleNotFoundException(id);
         Assertions.assertEquals(ex.getMessage(), resBody);
-
     }
 }
