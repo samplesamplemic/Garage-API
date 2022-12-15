@@ -2,6 +2,7 @@ package com.mic.garage.controller;
 
 import com.mic.garage.exception.VehicleNotFoundException;
 import com.mic.garage.model.Moto;
+import com.mic.garage.model.Times;
 import com.mic.garage.repository.MotoRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,16 +33,22 @@ public class MotoController {
                 .orElseThrow(() -> new VehicleNotFoundException(id));
     }
 
-//    @PutMapping("moto/{id}")
-//    Moto replaceMoto(@RequestBody Moto newMoto, @PathVariable Long id){
-//        return repository.findById(id)
-//                .map(moto -> {
-//                    moto.setBrand(newMoto.getBrand());
-//                    moto.setVehicleYear(newMoto.getVehicleYear());
-//                    moto.setEngine(newMoto.getEngine());
-//                    moto.setBrand(newMoto.getBrand());
-//                })
-//    }
+    @PutMapping("moto/{id}")
+    Moto replaceMoto(@RequestBody Moto newMoto, @PathVariable Long id){
+        return repository.findById(id)
+                .map(moto -> {
+                    moto.setBrand(newMoto.getBrand());
+                    moto.setVehicleYear(newMoto.getVehicleYear());
+                    moto.setEngine(newMoto.getEngine());
+                    moto.setBrand(newMoto.getBrand());
+                    //not set <times> to respect value object immutability
+                    return repository.save(moto);
+                })
+                .orElseGet(()-> {
+                    newMoto.setId(id);
+                    return  repository.save(newMoto);
+                });
+    }
 
     @DeleteMapping("/moto/{id}")
     void deleteMoto(@PathVariable Long id) {

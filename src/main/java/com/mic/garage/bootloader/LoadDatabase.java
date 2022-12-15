@@ -20,7 +20,7 @@ public class LoadDatabase {
     CommandLineRunner initDatabase(VehicleRepository repository, MotoRepository motoRepository) {
         return args -> {
 
-            motoRepository.save(new Moto("Kawasaki", 2013, 30, Times.createTimes(4)));
+            motoRepository.save(new Moto("Kawasaki", 2013, 30, 4));
             //repository.save(new Vehicle("Ford", 2006, 1300));
             //repository.save(new Vehicle("Kawasaki", 2013, 300));
 //            for (var v : repository.findAll()) {

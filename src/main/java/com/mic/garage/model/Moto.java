@@ -1,35 +1,40 @@
 package com.mic.garage.model;
 
+import com.fasterxml.jackson.annotation.JsonMerge;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 
 @Entity
+//Inheritance solution 2):
+//@DiscriminatorValue("1")
 public class Moto extends Vehicle {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    private Long id;
 
     @Embedded
     private Times times;
 
-
     public Moto() {
     }
 
-    public Moto(String brand, int vehicleYear, int EngineCapacity, Times times) {
+    public Moto(String brand, int vehicleYear, int EngineCapacity, int times) {
         super(brand, vehicleYear, EngineCapacity);
-        this.times = times;
+        this.times = Times.createTimes(times);
     }
 
-    public Times getTimes() {
-        return this.times;
+    //this return a nested json
+   // public Times getTimes(){return this.times;}
+
+    //spring web use the getter to store object
+    //!!!PROBLEM: value object validation bypassed!!!
+    public int getTimes() {
+        return Integer.valueOf(this.times.toString());
     }
+
 
     @Override
     public String toString() {
-        return super.toString().substring(0, super.toString().length() - 1).concat("," +
-                "times= "+times+
-                '}');
+        return super.toString().substring(0, super.toString().length() - 1).concat("" +
+                ", times=" + times + "\'" +
+                "}");
     }
 }

@@ -7,7 +7,15 @@ import java.io.Serializable;
 
 //@Entity
 //@Table(name = "Vehicles")
+
+//Inheritance solutions:
+//1)
 @MappedSuperclass
+
+//2)
+//@Entity
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name = "vehicle_type", discriminatorType = DiscriminatorType.INTEGER)
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

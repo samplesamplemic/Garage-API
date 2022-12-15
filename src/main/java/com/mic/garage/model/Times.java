@@ -18,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor(staticName = "private")
 public class Times implements Serializable {
 
-    @Column
+    //@Column
     private int times;
     private static List<Integer> rangeTimes = List.of(2, 4);
 
@@ -41,7 +41,7 @@ public class Times implements Serializable {
 
     @Override
     public String toString() {
-        return "times= " + times;
+        return "" + times;
     }
 }
 
