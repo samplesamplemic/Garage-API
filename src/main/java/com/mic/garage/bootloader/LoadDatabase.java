@@ -1,8 +1,6 @@
 package com.mic.garage.bootloader;
 
 import com.mic.garage.model.Moto;
-import com.mic.garage.model.Times;
-import com.mic.garage.model.Vehicle;
 import com.mic.garage.repository.MotoRepository;
 import com.mic.garage.repository.VehicleRepository;
 import org.slf4j.Logger;
