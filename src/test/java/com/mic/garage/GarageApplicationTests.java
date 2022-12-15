@@ -1,6 +1,10 @@
 package com.mic.garage;
 
 import com.mic.garage.exception.VehicleNotFoundException;
+import com.mic.garage.model.Car;
+import com.mic.garage.model.Doors;
+import com.mic.garage.model.Fuel;
+import com.mic.garage.repository.CarRepository;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -14,6 +18,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,6 +34,11 @@ class GarageApplicationTests {
     private HttpResponse httpResponse;
     private String url;
 
+      @Autowired //? automatically connection with bean
+    //if autowired not used, there is an error: java.lang.NullPointerException:
+    // Cannot invoke "com.mic.garage.repository.CarRepository.save(Object)" because "this.carRepository" is null
+    CarRepository carRepository;
+
     @BeforeEach
     void setUp() {
     }
@@ -38,7 +50,8 @@ class GarageApplicationTests {
         Assertions.assertEquals(httpResponse.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
     }
 
-    @Test                     //an error of type i/o;
+    @Test
+        //an error of type i/o;
     void testStatusCodeNotFound() throws IOException {
         //HttpUriRequest: Extended version of the HttpRequest interface that
         //provides convenience methods to access request properties such as request URI and method type.
@@ -58,5 +71,11 @@ class GarageApplicationTests {
         String resBody = EntityUtils.toString(entity, "UTF-8");
         Exception ex = new VehicleNotFoundException(id);
         Assertions.assertEquals(ex.getMessage(), resBody);
+    }
+
+    @Test
+    void testCarRepositorySave() {
+        Car car = carRepository.save(new Car(Doors.createDoors(3), Fuel.DIESEL, "Alfa Romeo", 2011, 1300));
+        assertThat(car).hasFieldOrPropertyWithValue("brand", "Alfa Romeo");
     }
 }

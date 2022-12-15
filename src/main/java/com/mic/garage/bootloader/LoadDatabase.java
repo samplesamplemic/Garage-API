@@ -1,8 +1,11 @@
 package com.mic.garage.bootloader;
 
+import com.mic.garage.model.Car;
+import com.mic.garage.model.Doors;
+import com.mic.garage.model.Fuel;
 import com.mic.garage.model.Moto;
+import com.mic.garage.repository.CarRepository;
 import com.mic.garage.repository.MotoRepository;
-import com.mic.garage.repository.VehicleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -14,18 +17,22 @@ public class LoadDatabase {
 
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
+
+    //<beans:> objects that form the backbone of application, are Spring IoC container;
+    //this object delegates the job of constructing such dependencies to an IoC container;
+    //IoC(inversion of Control: process in which an object defines its dependency without creating them)
     @Bean
-    CommandLineRunner initDatabase(VehicleRepository repository, MotoRepository motoRepository) {
+    CommandLineRunner initDatabase(MotoRepository motoRepository, CarRepository carRepository) {
         return args -> {
 
+            carRepository.save(new Car(Doors.createDoors(3), Fuel.DIESEL, "Alfa Romeo", 2011, 1300));
             motoRepository.save(new Moto("Kawasaki", 2013, 30, 4));
-            //repository.save(new Vehicle("Ford", 2006, 1300));
-            //repository.save(new Vehicle("Kawasaki", 2013, 300));
-//            for (var v : repository.findAll()) {
-//                log.info(v.toString());
-//            }
+
             for (var moto : motoRepository.findAll()) {
                 log.info(moto.toString());
+            }
+            for (var car : carRepository.findAll()) {
+                log.info(car.toString());
             }
         };
     }

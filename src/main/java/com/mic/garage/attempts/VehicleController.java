@@ -3,7 +3,7 @@
 //import com.mic.garage.model.Vehicle;
 //import com.mic.garage.exception.VehicleNotFoundException;
 //import com.mic.garage.repository.MotoRepository;
-//import com.mic.garage.repository.VehicleRepository;
+//import com.mic.garage.attempts.VehicleRepository;
 //import org.springframework.web.bind.annotation.*;
 //
 //import java.util.List;

@@ -7,6 +7,13 @@ import java.io.Serializable;
 
 //@Entity
 //@Table(name = "Vehicles")
+//@Getter
+//@Setter
+//@ToString
+//@EqualsAndHashCode
+//@Builder
+//@AllArgsConstructor
+//@NoArgsConstructor
 
 //Inheritance solutions:
 //1)
