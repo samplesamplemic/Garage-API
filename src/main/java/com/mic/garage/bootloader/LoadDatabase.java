@@ -33,6 +33,7 @@ public class LoadDatabase {
                 log.info(car.toString());
             }
             Stream.of(motoRepository.findAll()).forEach(el -> log.info(el.toString()));
+            //reference operator(System.out::println); ||
         };
     }
 }
