@@ -10,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.stream.Stream;
+
 @Configuration
 public class LoadDatabase {
 
@@ -26,12 +28,11 @@ public class LoadDatabase {
             carRepository.save(new Car(Doors.createDoors(3), Fuel.DIESEL, "Alfa Romeo", 2011, 1300));
             motoRepository.save(new Moto("Kawasaki", 2013, 30, Times.createTimes(4)));
             vanRepository.save(new Van("Mercedes", 2010, 3000, CargoCapacity.createCargoCapacity(700)));
-            for (var moto : motoRepository.findAll()) {
-                log.info(moto.toString());
-            }
+
             for (var car : carRepository.findAll()) {
                 log.info(car.toString());
             }
+            Stream.of(motoRepository.findAll()).forEach(el -> log.info(el.toString()));
         };
     }
 }
