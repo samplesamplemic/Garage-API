@@ -1,9 +1,6 @@
 package com.mic.garage.bootloader;
 
-import com.mic.garage.model.Car;
-import com.mic.garage.model.Doors;
-import com.mic.garage.model.Fuel;
-import com.mic.garage.model.Moto;
+import com.mic.garage.model.*;
 import com.mic.garage.repository.CarRepository;
 import com.mic.garage.repository.MotoRepository;
 import org.slf4j.Logger;
@@ -26,7 +23,7 @@ public class LoadDatabase {
         return args -> {
 
             carRepository.save(new Car(Doors.createDoors(3), Fuel.DIESEL, "Alfa Romeo", 2011, 1300));
-            motoRepository.save(new Moto("Kawasaki", 2013, 30, 4));
+            motoRepository.save(new Moto("Kawasaki", 2013, 30, Times.createTimes(4)));
 
             for (var moto : motoRepository.findAll()) {
                 log.info(moto.toString());

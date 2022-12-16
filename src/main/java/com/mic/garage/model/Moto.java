@@ -10,15 +10,15 @@ import java.io.Serializable;
 //@DiscriminatorValue("1")
 public class Moto extends Vehicle {
 
-    @Embedded
+   // @Embedded
     private Times times;
 
     public Moto() {
     }
 
-    public Moto(String brand, int vehicleYear, int EngineCapacity, int times) {
+    public Moto(String brand, int vehicleYear, int EngineCapacity, Times times) {
         super(brand, vehicleYear, EngineCapacity);
-        this.times = Times.createTimes(times);
+        this.times = times;
     }
 
     //this return a nested json
@@ -26,8 +26,9 @@ public class Moto extends Vehicle {
 
     //spring web use the getter to store object
     //!!!PROBLEM: value object validation bypassed!!!
-    public int getTimes() {
-        return Integer.valueOf(this.times.toString());
+    //solution: @JsonValue to getVar() and @JsonCreator to factory method, or in general the validation method
+    public Times getTimes() {
+        return times;
     }
 
 
