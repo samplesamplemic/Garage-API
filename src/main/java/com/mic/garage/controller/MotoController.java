@@ -11,48 +11,47 @@ import java.util.List;
 @RestController
 @RequestMapping("garage")
 public class MotoController {
-    private final MotoRepository repository;
+    private final MotoRepository motoRepository;
 
-    public MotoController(MotoRepository repository) {
-        this.repository = repository;
+    public MotoController(MotoRepository motoRepository) {
+        this.motoRepository = motoRepository;
     }
 
     @GetMapping("/moto")
     List<Moto> all() {
-        return repository.findAll();
+        return motoRepository.findAll();
     }
 
     @PostMapping("/moto")
     Moto newMoto(@RequestBody Moto newMoto) {
-        return repository.save(newMoto);
+        return motoRepository.save(newMoto);
     }
 
     @GetMapping("/moto/{id}")
-    Moto one(@PathVariable Long id){
-        return repository.findById(id)
+    Moto one(@PathVariable Long id) {
+        return motoRepository.findById(id)
                 .orElseThrow(() -> new VehicleNotFoundException(id));
     }
 
     @PutMapping("moto/{id}")
-    Moto replaceMoto(@RequestBody Moto newMoto, @PathVariable Long id){
-        return repository.findById(id)
+    Moto replaceMoto(@RequestBody Moto newMoto, @PathVariable Long id) {
+        return motoRepository.findById(id)
                 .map(moto -> {
                     moto.setBrand(newMoto.getBrand());
                     moto.setVehicleYear(newMoto.getVehicleYear());
                     moto.setEngine(newMoto.getEngine());
-                    moto.setBrand(newMoto.getBrand());
                     //not set <times> to respect value object immutability
-                    return repository.save(moto);
+                    return motoRepository.save(moto);
                 })
-                .orElseGet(()-> {
+                .orElseGet(() -> {
                     newMoto.setId(id);
-                    return  repository.save(newMoto);
+                    return motoRepository.save(newMoto);
                 });
     }
 
     @DeleteMapping("/moto/{id}")
     void deleteMoto(@PathVariable Long id) {
-        repository.deleteById(id);
+        motoRepository.deleteById(id);
     }
 
 }

@@ -26,7 +26,8 @@ public class Moto extends Vehicle {
 
     //spring web use the getter to store object
     //!!!PROBLEM: value object validation bypassed!!!
-    //solution: @JsonValue to getVar() and @JsonCreator to factory method, or in general the validation method
+    //solution: in value object(class) -> @JsonValue to getVar() and @JsonCreator to factory method, or in general the validation method
+    //this also resolve the nested object json;
     public Times getTimes() {
         return times;
     }

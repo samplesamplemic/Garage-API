@@ -1,5 +1,7 @@
 package com.mic.garage.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.mic.garage.exception.VehicleArgsNotAcceptedException;
 import com.mic.garage.exception.VehicleNotFoundException;
 import jakarta.persistence.Embeddable;
@@ -21,11 +23,13 @@ public class Doors {
         this.doors = doors;
     }
 
+    @JsonValue
     public int getDoors() {
         return doors;
     }
 
     //factory method
+    @JsonCreator
     public static Doors createDoors(int doors) {
         if (rangeDoors.contains(doors)) {
             return new Doors(doors);

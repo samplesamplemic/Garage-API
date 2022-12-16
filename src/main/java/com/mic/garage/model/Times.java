@@ -40,11 +40,10 @@ public class Times implements Serializable {
             return new Times(times);
         } else {
             //throw new RuntimeException("The value of times must be 2 or 4.");
-            times = 0;
             throw new VehicleArgsNotAcceptedException("The value of times must be 2 or 4.");
         }
 
-       // return  Stream.of(rangeTimes).filter(el -> el.contains(times)).findFirst().orElseThrow(() -> new VehicleArgsNotAcceptedException("The value of times must be 2 or 4."));
+        // return  Stream.of(rangeTimes).filter(el -> el.contains(times)).findFirst().orElseThrow(() -> new VehicleArgsNotAcceptedException("The value of times must be 2 or 4."));
     }
 
     @Override

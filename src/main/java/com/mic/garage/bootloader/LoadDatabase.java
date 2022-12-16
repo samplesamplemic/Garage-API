@@ -3,6 +3,7 @@ package com.mic.garage.bootloader;
 import com.mic.garage.model.*;
 import com.mic.garage.repository.CarRepository;
 import com.mic.garage.repository.MotoRepository;
+import com.mic.garage.repository.VanRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -19,12 +20,12 @@ public class LoadDatabase {
     //this object delegates the job of constructing such dependencies to an IoC container;
     //IoC(inversion of Control: process in which an object defines its dependency without creating them)
     @Bean
-    CommandLineRunner initDatabase(MotoRepository motoRepository, CarRepository carRepository) {
+    CommandLineRunner initDatabase(MotoRepository motoRepository, CarRepository carRepository, VanRepository vanRepository) {
         return args -> {
 
             carRepository.save(new Car(Doors.createDoors(3), Fuel.DIESEL, "Alfa Romeo", 2011, 1300));
             motoRepository.save(new Moto("Kawasaki", 2013, 30, Times.createTimes(4)));
-
+            vanRepository.save(new Van("Mercedes", 2010, 3000, CargoCapacity.createCargoCapacity(700)));
             for (var moto : motoRepository.findAll()) {
                 log.info(moto.toString());
             }
