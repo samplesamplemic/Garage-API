@@ -4,9 +4,13 @@ import com.mic.garage.exception.VehicleNotFoundException;
 import com.mic.garage.model.Car;
 import com.mic.garage.repository.CarRepository;
 import com.mic.garage.repository.MotoRepository;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
@@ -20,6 +24,7 @@ public class CarController {
     }
 
     @GetMapping("/cars")
+    //method default: allow access only from inside package
     List<Car> all() {
         return carRepository.findAll();
     }
@@ -30,10 +35,22 @@ public class CarController {
         return carRepository.save(newCar);
     }
 
-    @GetMapping("/cars/{id}")
-    Car one(@PathVariable Long id) {
-        return carRepository.findById(id)
-                .orElseThrow(() -> new VehicleNotFoundException(id));
+//    @GetMapping("/cars/{id}")
+//    Car one(@PathVariable Long id) {
+//        return carRepository.findById(id)
+//                .orElseThrow(() -> new VehicleNotFoundException(id));
+//    }
+
+    //through more restful api - importing <hateoas> dependency 
+    @GetMapping("cars/{id}")
+    EntityModel<Car> one(@PathVariable Long id){
+        Car car = carRepository.findById(id)
+                            //lambda expression
+                .orElseThrow(() ->new VehicleNotFoundException(id));
+
+        return EntityModel.of(car,
+                linkTo(methodOn(CarController.class).one(id)).withSelfRel(),
+                linkTo(methodOn(CarController.class).all()).withRel("cars"));
     }
 
     @PutMapping("/cars/{id}")
