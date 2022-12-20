@@ -41,7 +41,7 @@ public class CarController {
 //                .orElseThrow(() -> new VehicleNotFoundException(id));
 //    }
 
-    //through more restful api - importing <hateoas> dependency 
+    // more restful api - importing <hateoas> dependency
     @GetMapping("cars/{id}")
     EntityModel<Car> one(@PathVariable Long id){
         Car car = carRepository.findById(id)
