@@ -1,6 +1,6 @@
 package com.mic.garage.bootloader;
 
-import com.mic.garage.model.*;
+import com.mic.garage.entity.*;
 import com.mic.garage.repository.CarRepository;
 import com.mic.garage.repository.MotoRepository;
 import com.mic.garage.repository.VanRepository;
@@ -14,6 +14,8 @@ import java.util.stream.Stream;
 
 @Configuration
 public class LoadDatabase {
+
+    //NON é UNA CONFIGURATION.
 
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 

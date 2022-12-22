@@ -1,5 +1,6 @@
-package com.mic.garage.exception;
+package com.mic.garage.exception.advice;
 
+import com.mic.garage.exception.VehicleArgsNotAcceptedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

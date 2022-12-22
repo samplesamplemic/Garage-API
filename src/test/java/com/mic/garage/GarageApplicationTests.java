@@ -1,28 +1,21 @@
 package com.mic.garage;
 
 import com.mic.garage.exception.VehicleNotFoundException;
-import com.mic.garage.model.Car;
-import com.mic.garage.model.Doors;
-import com.mic.garage.model.Fuel;
+import com.mic.garage.entity.Car;
+import com.mic.garage.entity.Doors;
+import com.mic.garage.entity.Fuel;
 import com.mic.garage.repository.CarRepository;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

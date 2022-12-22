@@ -1,7 +1,7 @@
 package com.mic.garage.controller;
 
 import com.mic.garage.exception.VehicleNotFoundException;
-import com.mic.garage.model.Van;
+import com.mic.garage.entity.Van;
 import com.mic.garage.repository.VanRepository;
 import org.springframework.web.bind.annotation.*;
 

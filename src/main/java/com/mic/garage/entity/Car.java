@@ -1,4 +1,4 @@
-package com.mic.garage.model;
+package com.mic.garage.entity;
 
 import jakarta.persistence.*;
 

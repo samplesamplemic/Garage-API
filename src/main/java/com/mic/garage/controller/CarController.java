@@ -1,15 +1,14 @@
 package com.mic.garage.controller;
 
-import com.mic.garage.exception.VehicleNotFoundException;
-import com.mic.garage.model.Car;
-import com.mic.garage.model.CarModelAssembler;
-import com.mic.garage.repository.CarRepository;
+import com.mic.garage.entity.Car;
+import com.mic.garage.model.CarDto;
+import com.mic.garage.service.assembler.CarModelAssembler;
+import com.mic.garage.service.command.CommandCarService;
+import com.mic.garage.service.query.QueryCarService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -19,13 +18,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("garage")
 public class CarController {
 
-    private final CarRepository carRepository;
 
-    private final CarModelAssembler assembler;
+    private final CommandCarService commandService;
 
-    public CarController(CarRepository carRepository, CarModelAssembler assembler) {
-        this.carRepository = carRepository;
-        this.assembler = assembler;
+    private final QueryCarService queryCarService;
+
+    private final CarModelAssembler carModelAssembler;
+
+    public CarController(@Qualifier(value = "Car_command_service")CommandCarService commandService, @Qualifier(value = "QueryCarService2") QueryCarService queryCarService, CarModelAssembler carModelAssembler) {
+        this.commandService = commandService;
+        this.queryCarService = queryCarService;
+        this.carModelAssembler = carModelAssembler;
     }
 
     //1)
@@ -51,68 +54,32 @@ public class CarController {
 
     //3)
     @GetMapping("/cars")
-    public CollectionModel<EntityModel<Car>> all() {
-        List<EntityModel<Car>> cars = carRepository.findAll().stream()
-                .map(assembler::toModel)
-                .collect(Collectors.toList());
-
-        return CollectionModel.of(cars, linkTo(methodOn(CarController.class).all()).withSelfRel());
+    public CollectionModel<Car> all() {
+        var cars = queryCarService.getAll();
+        return CollectionModel.of(CollectionModel.of(cars), linkTo(methodOn(CarController.class).all()).withSelfRel());
     }
 
 
-    //deserialize
     @PostMapping("cars")
-    Car newCar(@RequestBody Car newCar) {
-        return carRepository.save(newCar);
+    public CarDto newCar(@RequestBody CarDto newCar) {
+        return commandService.create(newCar);
     }
-
-    //1)
-//    @GetMapping("/cars/{id}")
-//    Car one(@PathVariable Long id) {
-//        return carRepository.findById(id)
-//                .orElseThrow(() -> new VehicleNotFoundException(id));
-//    }
-
-    //2)
-    // ---more restful api - importing <hateoas> dependency---
-//    @GetMapping("cars/{id}")
-//    EntityModel<Car> one(@PathVariable Long id) {
-//        Car car = carRepository.findById(id)
-//                //lambda expression
-//                .orElseThrow(() -> new VehicleNotFoundException(id));
-//
-//        return EntityModel.of(car,
-//                linkTo(methodOn(CarController.class).one(id)).withSelfRel(),
-//                linkTo(methodOn(CarController.class).all()).withRel("cars"));
-//    }
 
     //3)
     @GetMapping("cars/{id}")
     public EntityModel<Car> one(@PathVariable Long id) {
-        Car car = carRepository.findById(id)
-                .orElseThrow(() -> new VehicleNotFoundException(id));
-
-        return assembler.toModel(car);
+        Car car = queryCarService.getById(id);
+        return carModelAssembler.toModel(car);
     }
 
 
     @PutMapping("/cars/{id}")
-    Car replaceCar(@RequestBody Car newCar, @PathVariable Long id) {
-        return carRepository.findById(id)
-                .map(car -> {
-                    car.setBrand(newCar.getBrand());
-                    car.setEngine(newCar.getEngine());
-                    car.setVehicleYear(newCar.getVehicleYear());
-                    return carRepository.save(car);
-                })
-                .orElseGet(() -> {
-                    newCar.setId(id);
-                    return carRepository.save(newCar);
-                });
+    public CarDto replaceCar(@RequestBody CarDto newCar, @PathVariable Long id) {
+        return commandService.modify(newCar,id);
     }
 
     @DeleteMapping("/cars/{id}")
-    void deleteCar(@PathVariable Long id) {
-        carRepository.deleteById(id);
+    public void deleteCar(@PathVariable Long id) {
+        commandService.delete(id);
     }
 }

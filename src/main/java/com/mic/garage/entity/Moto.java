@@ -1,9 +1,6 @@
-package com.mic.garage.model;
+package com.mic.garage.entity;
 
-import com.fasterxml.jackson.annotation.JsonMerge;
 import jakarta.persistence.*;
-
-import java.io.Serializable;
 
 @Entity
 //Inheritance solution 2):

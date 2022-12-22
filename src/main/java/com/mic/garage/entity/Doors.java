@@ -1,9 +1,8 @@
-package com.mic.garage.model;
+package com.mic.garage.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.mic.garage.exception.VehicleArgsNotAcceptedException;
-import com.mic.garage.exception.VehicleNotFoundException;
 import jakarta.persistence.Embeddable;
 import lombok.NoArgsConstructor;
 

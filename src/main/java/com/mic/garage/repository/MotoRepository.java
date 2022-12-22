@@ -1,6 +1,6 @@
 package com.mic.garage.repository;
 
-import com.mic.garage.model.Moto;
+import com.mic.garage.entity.Moto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 //why repository should be an interface?

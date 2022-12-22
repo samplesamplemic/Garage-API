@@ -1,14 +1,12 @@
-package com.mic.garage.model;
+package com.mic.garage.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.mic.garage.exception.VehicleArgsNotAcceptedException;
-import jakarta.persistence.Embeddable;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.io.Serializable;
-import java.util.stream.Stream;
 //If an entity instance is to be passed by value as a detached object,
 //the entity class must implement the Serializable interface.
 //<Serializable> necessary to transfer entities over-the-wire

@@ -1,9 +1,12 @@
-package com.mic.garage.model;
+package com.mic.garage.entity;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 
-import java.io.Serializable;
+import java.util.Objects;
 
 //@Entity
 //@Table(name = "Vehicles")
@@ -82,5 +85,21 @@ public class Vehicle {
                 ", engine capacity=" + engine +
                 ", brand='" + brand + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        if (vehicle.getId().equals(this.id)){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, brand, vehicleYear, engine);
     }
 }
