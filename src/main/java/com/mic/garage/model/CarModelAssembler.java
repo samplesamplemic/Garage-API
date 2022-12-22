@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+//RepresentationalModel: base class for DTOs to collect links
+//RepresentationModelAssembler: to convert a domain type into a RepresentationModel - method <toModel(T entity)>
 @Component
 public class CarModelAssembler implements RepresentationModelAssembler<Car, EntityModel<Car>> {
 

@@ -36,10 +36,10 @@ public class CarController {
 //    }
 
     //2)
-   // @GetMapping("/cars")
-        //<CollectionModel<>>: Spring Hateoas container - it's aimed to encapsulating collection of resource
+    // @GetMapping("/cars")
+    //<CollectionModel<>>: Spring Hateoas container - it's aimed to encapsulating collection of resource
     //instead a single resource like <EntityModel<>>
-//   public  CollectionModel<EntityModel<Car>> all() {
+//   CollectionModel<EntityModel<Car>> all() {
 //        List<EntityModel<Car>> cars = carRepository.findAll().stream()
 //                .map(car -> EntityModel.of(car,
 //                        linkTo(methodOn(CarController.class).one(car.getId())).withSelfRel(),
@@ -51,14 +51,13 @@ public class CarController {
 
     //3)
     @GetMapping("/cars")
-    public CollectionModel<EntityModel<Car>> all(){
+    public CollectionModel<EntityModel<Car>> all() {
         List<EntityModel<Car>> cars = carRepository.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(cars, linkTo(methodOn(CarController.class).all()).withSelfRel());
     }
-
 
 
     //deserialize
@@ -75,7 +74,7 @@ public class CarController {
 //    }
 
     //2)
-    // more restful api - importing <hateoas> dependency
+    // ---more restful api - importing <hateoas> dependency---
 //    @GetMapping("cars/{id}")
 //    EntityModel<Car> one(@PathVariable Long id) {
 //        Car car = carRepository.findById(id)
@@ -89,7 +88,7 @@ public class CarController {
 
     //3)
     @GetMapping("cars/{id}")
-   public EntityModel<Car> one(@PathVariable Long id){
+    public EntityModel<Car> one(@PathVariable Long id) {
         Car car = carRepository.findById(id)
                 .orElseThrow(() -> new VehicleNotFoundException(id));
 
