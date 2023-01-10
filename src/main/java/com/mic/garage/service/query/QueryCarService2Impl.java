@@ -3,22 +3,28 @@ package com.mic.garage.service.query;
 import com.mic.garage.entity.Car;
 import com.mic.garage.exception.VehicleNotFoundException;
 import com.mic.garage.repository.CarRepository;
+import com.mic.garage.service.assembler.CarModelAssembler;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("QueryCarService2")
 public class QueryCarService2Impl implements QueryCarService{
 
     private final CarRepository carRepository;
+    private final CarModelAssembler carModelAssembler;
 
-    public QueryCarService2Impl(CarRepository carRepository) {
+    public QueryCarService2Impl(CarRepository carRepository, CarModelAssembler carModelAssembler) {
         this.carRepository = carRepository;
+        this.carModelAssembler = carModelAssembler;
     }
-
     @Override
-    public List<Car> getAll() {
-        return carRepository.findAll();
+    public List<EntityModel<Car>> getAll() {
+        return carRepository.findAll().stream()
+                .map(carModelAssembler::toModel)
+                .collect(Collectors.toList());
     }
 
     @Override

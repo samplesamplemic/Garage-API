@@ -8,7 +8,7 @@ public class Car extends Vehicle {
     @Embedded
     private Doors doors;
 
-   // @Embedded
+    // @Embedded
     //@Enumerated(EnumType.STRING)
     //@Column(name = "fuel")
     private Fuel fuel;
@@ -25,6 +25,7 @@ public class Car extends Vehicle {
     public int getDoors() {
         return this.doors.getDoors();
     }
+
 
 //    commented cause value object principle: immutability;
 //    public void setDoors(Doors doors) {

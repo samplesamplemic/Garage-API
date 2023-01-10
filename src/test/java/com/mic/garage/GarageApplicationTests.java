@@ -48,7 +48,6 @@ class GarageApplicationTests {
     void testStatusCodeNotFound() throws IOException {
         //HttpUriRequest: Extended version of the HttpRequest interface that
         //provides convenience methods to access request properties such as request URI and method type.
-        //HttpUriRequest request1 = new HttpGet(url)
         String id = "3";
         url = "http://localhost:8080/garage/moto/" + id;
         httpResponse = HttpClientBuilder.create().build().execute(new HttpGet(url));
