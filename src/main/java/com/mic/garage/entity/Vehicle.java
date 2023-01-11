@@ -32,14 +32,14 @@ public class Vehicle {
     private Long id;
     private String brand;
     private int vehicleYear;
-    private int engine;
+    private int engineCapacity;
 
     public Vehicle() {
     }
 
-    public Vehicle(String brand, int vehicleYear, int engine) {
+    public Vehicle(String brand, int vehicleYear, int engineCapacity) {
         this.vehicleYear = vehicleYear;
-        this.engine = engine;
+        this.engineCapacity = engineCapacity;
         this.brand = brand;
     }
 
@@ -60,12 +60,12 @@ public class Vehicle {
         this.vehicleYear = vehicleYear;
     }
 
-    public int getEngine() {
-        return engine;
+    public int getEngineCapacity() {
+        return engineCapacity;
     }
 
-    public void setEngine(int engine) {
-        this.engine = engine;
+    public void setEngineCapacity(int engineCapacity) {
+        this.engineCapacity = engineCapacity;
     }
 
     public String getBrand() {
@@ -82,7 +82,7 @@ public class Vehicle {
         return "Vehicle{" +
                 "id=" + id +
                 ", year=" + vehicleYear +
-                ", engine capacity=" + engine +
+                ", engine capacity=" + engineCapacity +
                 ", brand='" + brand + '\'' +
                 '}';
     }
@@ -92,7 +92,7 @@ public class Vehicle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        if (vehicle.getId().equals(this.id)){
+        if (vehicle.getId().equals(this.id)) {
             return true;
         }
         return false;
@@ -100,6 +100,6 @@ public class Vehicle {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, brand, vehicleYear, engine);
+        return Objects.hash(id, brand, vehicleYear, engineCapacity);
     }
 }

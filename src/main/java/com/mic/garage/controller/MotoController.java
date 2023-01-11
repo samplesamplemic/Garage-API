@@ -7,6 +7,7 @@ import com.mic.garage.service.MotoServiceImpl;
 import com.mic.garage.service.assembler.MotoModelAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,16 +25,17 @@ public class MotoController {
     }
 
     @GetMapping("/moto")
-    public CollectionModel<EntityModel<Moto>> getAllMoto() {
+    public CollectionModel<EntityModel<MotoDto>> getAllMoto() {
         return motoService.readAll();
     }
 
     @GetMapping("/moto/{id}")
-    public EntityModel<Moto> getOneMoto(@PathVariable Long id) {
+    public EntityModel<MotoDto> getOneMoto(@PathVariable Long id) {
         return motoService.readById(id);
     }
 
     @PostMapping("/moto")
+    @ResponseStatus(HttpStatus.CREATED)
     public MotoDto createNewMoto(@RequestBody MotoDto newMoto) {
         return motoService.create(newMoto);
     }

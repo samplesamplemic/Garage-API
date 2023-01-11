@@ -8,14 +8,14 @@ import java.util.List;
 // DAO: data access object || Structural patter
 // It provides to encapsulating the details of the persistence layer and providing a CRUD interface
 // to keep domain model/business logic completely decoupled from persistence layer
-public interface VehicleService<T, S> {
+public interface VehicleService<T> {
     T create(T vehicle);
 
     T update(T vehicle, Long id);
 
-    CollectionModel<EntityModel<S>> readAll();
+    CollectionModel<EntityModel<T>> readAll();
 
-    EntityModel<S> readById(Long id);
+    EntityModel<T> readById(Long id);
 
     void delete(Long id);
 }

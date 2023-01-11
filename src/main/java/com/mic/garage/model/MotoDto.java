@@ -9,8 +9,8 @@ import lombok.experimental.SuperBuilder;
 public class MotoDto extends VehicleDto {
     private Times times;
 
-    public MotoDto(String brand, int vehicleYear, int engine, Times times) {
-        super(brand, vehicleYear, engine);
+    public MotoDto(Long id, String brand, int vehicleYear, int engineCapacity, Times times) {
+        super(id, brand, vehicleYear, engineCapacity);
         this.times = times;
     }
 }

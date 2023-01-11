@@ -10,9 +10,10 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 public class VehicleDto {
+    private Long id;
     private String brand;
     private int vehicleYear;
-    private int engine;
+    private int engineCapacity;
 
    // abstract boolean exit();
 }

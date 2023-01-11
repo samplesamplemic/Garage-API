@@ -9,8 +9,8 @@ import lombok.experimental.SuperBuilder;
 public class VanDto extends VehicleDto {
     private CargoCapacity cargoCapacity;
 
-    public VanDto(String brand, int vehicleYear, int engine, CargoCapacity cargoCapacity) {
-        super(brand, vehicleYear, engine);
+    public VanDto(Long id,String brand, int vehicleYear, int engineCapacity, CargoCapacity cargoCapacity) {
+        super(id,brand, vehicleYear, engineCapacity);
         this.cargoCapacity = cargoCapacity;
     }
 }

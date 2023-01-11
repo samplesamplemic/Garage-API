@@ -15,12 +15,13 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
-public class CarServiceImpl implements VehicleService<CarDto, Car> {
+public class CarServiceImpl implements VehicleService<CarDto> {
 
     @Autowired
     private CarRepository carRepository;
@@ -32,23 +33,25 @@ public class CarServiceImpl implements VehicleService<CarDto, Car> {
     }
 
     @Override
-    public CollectionModel<EntityModel<Car>> readAll() {
-        List<EntityModel<Car>> cars = carRepository.findAll().stream()
-                .map(carModelAssembler::toModel)
+    public CollectionModel<EntityModel<CarDto>> readAll() {
+        Stream<CarDto> cars = carRepository.findAll().stream()
+                .map(car -> new CarDto(car.getId(), car.getBrand(), car.getVehicleYear(), car.getEngineCapacity(), Doors.createDoors(car.getDoors()), car.getFuel()));
+        List<EntityModel<CarDto>> carsDto = cars.map(carModelAssembler::toModel)
                 .collect(Collectors.toList());
-        return CollectionModel.of(cars, linkTo(methodOn(CarController.class).getAllCars()).withSelfRel());
+        return CollectionModel.of(carsDto, linkTo(methodOn(CarController.class).getAllCars()).withSelfRel());
     }
 
     @Override
-    public EntityModel<Car> readById(Long id) {
+    public EntityModel<CarDto> readById(Long id) {
         Car car = carRepository.findById(id)
                 .orElseThrow(() -> new VehicleNotFoundException(id));
-        return carModelAssembler.toModel(car);
+        CarDto carDto = new CarDto(car.getId(), car.getBrand(), car.getVehicleYear(), car.getEngineCapacity(), Doors.createDoors(car.getDoors()), car.getFuel());
+        return carModelAssembler.toModel(carDto);
     }
 
     @Override
     public CarDto create(CarDto vehicle) {
-        Car car = new Car(vehicle.getDoors(), vehicle.getFuel(), vehicle.getBrand(), vehicle.getEngine(), vehicle.getVehicleYear());
+        Car car = new Car(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getDoors(), vehicle.getFuel());
         carRepository.save(car);
         return vehicle;
     }
@@ -58,18 +61,19 @@ public class CarServiceImpl implements VehicleService<CarDto, Car> {
         var carDto = carRepository.findById(id)
                 .map(car -> {
                     car.setBrand(vehicle.getBrand());
-                    car.setEngine(vehicle.getEngine());
+                    car.setEngineCapacity(vehicle.getEngineCapacity());
                     car.setVehicleYear(vehicle.getVehicleYear());
                     return carRepository.save(car);
                 })
                 .orElseGet(() -> {
-                    Car car = new Car(vehicle.getDoors(), vehicle.getFuel(), vehicle.getBrand(), vehicle.getEngine(), vehicle.getVehicleYear());
+                    Car car = new Car(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getDoors(), vehicle.getFuel());
                     carRepository.save(car);
                     return car;
                 });
         return CarDto.builder()
+                .id(carDto.getId())
                 .brand(carDto.getBrand())
-                .engine(carDto.getEngine())
+                .engineCapacity(carDto.getEngineCapacity())
                 .vehicleYear(carDto.getVehicleYear())
                 .fuel(carDto.getFuel())
                 .doors(Doors.createDoors(carDto.getDoors()))

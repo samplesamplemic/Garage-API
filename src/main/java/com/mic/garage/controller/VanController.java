@@ -37,7 +37,7 @@ public class VanController {
         return vanRepository.findById(id)
                 .map(van -> {
                     van.setBrand(newVan.getBrand());
-                    van.setEngine(newVan.getEngine());
+                    van.setEngineCapacity(newVan.getEngineCapacity());
                     van.setVehicleYear(newVan.getVehicleYear());
                     return vanRepository.save(van);
                 })

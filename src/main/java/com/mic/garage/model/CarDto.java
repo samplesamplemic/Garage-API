@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter
 //builder pattern || creational pattern ||
 //When complexity of creating object increase, it can separate the instantiation process
 //by using another object(a builder) to construct the object
@@ -16,8 +16,8 @@ public class CarDto extends VehicleDto {
     private Doors doors;
     private Fuel fuel;
 
-    public CarDto(Doors doors, Fuel fuel, String brand, int year, int carEngineCapacity) {
-        super(brand, year, carEngineCapacity);
+    public CarDto(Long id, String brand, int vehicleYear, int engineCapacity, Doors doors, Fuel fuel) {
+        super(id, brand, vehicleYear, engineCapacity);
         this.doors = doors;
         this.fuel = fuel;
     }

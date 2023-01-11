@@ -14,12 +14,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
-public class MotoServiceImpl implements VehicleService<MotoDto, Moto> {
+public class MotoServiceImpl implements VehicleService<MotoDto> {
 
     @Autowired
     private MotoRepository motoRepository;
@@ -31,8 +32,25 @@ public class MotoServiceImpl implements VehicleService<MotoDto, Moto> {
     }
 
     @Override
+    public CollectionModel<EntityModel<MotoDto>> readAll() {
+        Stream<MotoDto> moto = motoRepository.findAll().stream()
+                .map(mot -> new MotoDto(mot.getId(), mot.getBrand(), mot.getVehicleYear(), mot.getEngineCapacity(), mot.getTimes()));
+        List<EntityModel<MotoDto>> motoDto = moto.map(motoModelAssembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(motoDto, linkTo(methodOn(MotoController.class).getAllMoto()).withSelfRel());
+    }
+
+    @Override
+    public EntityModel<MotoDto> readById(Long id) {
+        Moto moto = motoRepository.findById(id)
+                .orElseThrow(() -> new VehicleNotFoundException(id));
+        MotoDto motoDto = new MotoDto(moto.getId(), moto.getBrand(), moto.getVehicleYear(), moto.getEngineCapacity(), moto.getTimes());
+        return motoModelAssembler.toModel(motoDto);
+    }
+
+    @Override
     public MotoDto create(MotoDto vehicle) {
-        Moto moto = new Moto(vehicle.getBrand(), vehicle.getEngine(), vehicle.getVehicleYear(), vehicle.getTimes());
+        Moto moto = new Moto(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getTimes());
         motoRepository.save(moto);
         return vehicle;
     }
@@ -42,36 +60,22 @@ public class MotoServiceImpl implements VehicleService<MotoDto, Moto> {
         Moto motoDto = motoRepository.findById(id)
                 .map(moto -> {
                     moto.setBrand(vehicle.getBrand());
-                    moto.setEngine(vehicle.getEngine());
+                    moto.setEngineCapacity(vehicle.getEngineCapacity());
                     moto.setVehicleYear(vehicle.getVehicleYear());
                     return motoRepository.save(moto);
                 })
                 .orElseGet(() -> {
-                    Moto moto = new Moto(vehicle.getBrand(), vehicle.getEngine(), vehicle.getVehicleYear(), vehicle.getTimes());
+                    Moto moto = new Moto(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getTimes());
                     motoRepository.save(moto);
                     return moto;
                 });
         return MotoDto.builder()
+                .id(motoDto.getId())
                 .brand(motoDto.getBrand())
-                .engine(motoDto.getEngine())
+                .engineCapacity(motoDto.getEngineCapacity())
                 .vehicleYear(motoDto.getVehicleYear())
                 .times(motoDto.getTimes())
                 .build();
-    }
-
-    @Override
-    public CollectionModel<EntityModel<Moto>> readAll() {
-        List<EntityModel<Moto>> moto = motoRepository.findAll().stream()
-                .map(motoModelAssembler::toModel)
-                .collect(Collectors.toList());
-        return CollectionModel.of(moto, linkTo(methodOn(MotoController.class).getAllMoto()).withSelfRel());
-    }
-
-    @Override
-    public EntityModel<Moto> readById(Long id) {
-        Moto moto = motoRepository.findById(id)
-                .orElseThrow(() -> new VehicleNotFoundException(id));
-        return motoModelAssembler.toModel(moto);
     }
 
     @Override

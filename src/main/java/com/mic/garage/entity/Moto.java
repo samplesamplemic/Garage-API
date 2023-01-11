@@ -13,8 +13,8 @@ public class Moto extends Vehicle {
     public Moto() {
     }
 
-    public Moto(String brand, int vehicleYear, int EngineCapacity, Times times) {
-        super(brand, vehicleYear, EngineCapacity);
+    public Moto(String brand, int vehicleYear, int engineCapacity, Times times) {
+        super(brand, vehicleYear, engineCapacity);
         this.times = times;
     }
 

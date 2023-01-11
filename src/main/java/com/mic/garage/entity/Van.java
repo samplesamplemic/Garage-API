@@ -12,8 +12,8 @@ public class Van extends Vehicle {
     public Van() {
     }
 
-    public Van(String brand, int year, int carEngineCapacity, CargoCapacity cargoCapacity) {
-        super(brand, year, carEngineCapacity);
+    public Van(String brand, int vehicleYear, int engineCapacity, CargoCapacity cargoCapacity) {
+        super(brand, vehicleYear, engineCapacity);
         this.cargoCapacity = cargoCapacity;
     }
 
