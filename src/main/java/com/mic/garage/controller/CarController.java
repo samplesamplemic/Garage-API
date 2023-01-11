@@ -6,6 +6,7 @@ import com.mic.garage.service.CarServiceImpl;
 import com.mic.garage.service.assembler.CarModelAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -37,6 +38,7 @@ public class CarController {
     }
 
     @PostMapping("cars")
+    @ResponseStatus(HttpStatus.CREATED)
     public CarDto createNewCar(@RequestBody CarDto newCar) {
         return carService.create(newCar);
     }
