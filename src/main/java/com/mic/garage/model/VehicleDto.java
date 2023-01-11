@@ -13,4 +13,6 @@ public class VehicleDto {
     private String brand;
     private int vehicleYear;
     private int engine;
+
+   // abstract boolean exit();
 }

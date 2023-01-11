@@ -1,5 +1,6 @@
 package com.mic.garage.service;
 
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 
 import java.util.List;
@@ -12,9 +13,9 @@ public interface VehicleService<T, S> {
 
     T update(T vehicle, Long id);
 
-    List<EntityModel<S>> readAll();
+    CollectionModel<EntityModel<S>> readAll();
 
-    S readById(Long id);
+    EntityModel<S> readById(Long id);
 
     void delete(Long id);
 }
