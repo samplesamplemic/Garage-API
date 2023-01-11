@@ -52,7 +52,12 @@ public class MotoServiceImpl implements VehicleService<MotoDto> {
     public MotoDto create(MotoDto vehicle) {
         Moto moto = new Moto(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getTimes());
         motoRepository.save(moto);
-        return vehicle;
+        return vehicle.builder()
+                .brand(vehicle.getBrand())
+                .vehicleYear(vehicle.getVehicleYear())
+                .engineCapacity(vehicle.getEngineCapacity())
+                .times(vehicle.getTimes())
+                .build();
     }
 
     @Override

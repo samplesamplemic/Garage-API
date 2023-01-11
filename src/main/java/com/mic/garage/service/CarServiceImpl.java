@@ -53,7 +53,13 @@ public class CarServiceImpl implements VehicleService<CarDto> {
     public CarDto create(CarDto vehicle) {
         Car car = new Car(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getDoors(), vehicle.getFuel());
         carRepository.save(car);
-        return vehicle;
+        return vehicle.builder()
+                .brand(vehicle.getBrand())
+                .vehicleYear(vehicle.getVehicleYear())
+                .engineCapacity(vehicle.getEngineCapacity())
+                .doors(vehicle.getDoors())
+                .fuel(vehicle.getFuel())
+                .build();
     }
 
     @Override
@@ -71,7 +77,6 @@ public class CarServiceImpl implements VehicleService<CarDto> {
                     return car;
                 });
         return CarDto.builder()
-                .id(carDto.getId())
                 .brand(carDto.getBrand())
                 .engineCapacity(carDto.getEngineCapacity())
                 .vehicleYear(carDto.getVehicleYear())
