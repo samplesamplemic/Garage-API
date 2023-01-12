@@ -1,55 +1,49 @@
 package com.mic.garage.controller;
 
-import com.mic.garage.exception.VehicleNotFoundException;
-import com.mic.garage.entity.Van;
-import com.mic.garage.repository.VanRepository;
+import com.mic.garage.model.VanDto;
+import com.mic.garage.service.VanServiceImpl;
+import com.mic.garage.service.assembler.VanModelAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/garage")
 public class VanController {
-    private final VanRepository vanRepository;
 
-    public VanController(VanRepository vanRepository) {
-        this.vanRepository = vanRepository;
+    private final VanModelAssembler vanModelAssembler;
+    private final VanServiceImpl vanService;
+
+    public VanController(VanModelAssembler vanModelAssembler, VanServiceImpl vanService) {
+        this.vanModelAssembler = vanModelAssembler;
+        this.vanService = vanService;
     }
 
-    @GetMapping("/vans")
-    List<Van> all() {
-        return vanRepository.findAll();
+    @PostMapping("/van")
+    @ResponseStatus(HttpStatus.CREATED)
+    public VanDto createNewVan(@RequestBody VanDto newVan){
+        return  vanService.create(newVan);
     }
 
-    @PostMapping("/vans")
-    Van newVan(@RequestBody Van newVan) {
-        return vanRepository.save(newVan);
+    @GetMapping("/van")
+    public CollectionModel<EntityModel<VanDto>> getAllVan() {
+        return vanService.readAll();
     }
 
-    @GetMapping("/vans/{id}")
-    Van one(@PathVariable Long id) {
-        return vanRepository.findById(id)
-                .orElseThrow(() -> new VehicleNotFoundException(id));
+    @GetMapping("/van/{id}")
+    public EntityModel<VanDto> getOneVan(@PathVariable Long id) {
+        return vanService.readById(id);
     }
 
-    @PutMapping("/vans/{id}")
-    Van replaceVan(@RequestBody Van newVan, @PathVariable Long id) {
-        return vanRepository.findById(id)
-                .map(van -> {
-                    van.setBrand(newVan.getBrand());
-                    van.setEngineCapacity(newVan.getEngineCapacity());
-                    van.setVehicleYear(newVan.getVehicleYear());
-                    return vanRepository.save(van);
-                })
-                .orElseGet(() -> {
-                    newVan.setId(id);
-                    return vanRepository.save(newVan);
-                });
+    @PutMapping("/van/{id}")
+    public VanDto updateVan(@RequestBody VanDto newVan, @PathVariable Long id){
+        return vanService.update(newVan, id);
     }
 
-    @DeleteMapping("/vans/{id}")
-    void deleteVan(@PathVariable Long id) {
-        vanRepository.deleteById(id);
+    @DeleteMapping("/van/{id}")
+    public void deleteVan(@PathVariable Long id){
+        vanService.delete(id);
     }
 }
 

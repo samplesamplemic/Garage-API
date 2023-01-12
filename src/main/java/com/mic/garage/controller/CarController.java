@@ -25,6 +25,12 @@ public class CarController {
         this.carService = carService;
     }
 
+    @PostMapping("/cars")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CarDto createNewCar(@RequestBody CarDto newCar) {
+        return carService.create(newCar);
+    }
+
     @GetMapping("/cars")
     //<CollectionModel<>>: Spring Hateoas container - it's aimed to encapsulating collection of resource
     //instead a single resource like <EntityModel<>>
@@ -32,15 +38,9 @@ public class CarController {
         return carService.readAll();
     }
 
-    @GetMapping("cars/{id}")
+    @GetMapping("/cars/{id}")
     public EntityModel<CarDto> getOneCar(@PathVariable Long id) {
         return carService.readById(id);
-    }
-
-    @PostMapping("cars")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CarDto createNewCar(@RequestBody CarDto newCar) {
-        return carService.create(newCar);
     }
 
     @PutMapping("/cars/{id}")

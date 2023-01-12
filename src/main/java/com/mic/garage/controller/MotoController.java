@@ -24,6 +24,12 @@ public class MotoController {
         this.motoService = motoService;
     }
 
+    @PostMapping("/moto")
+    @ResponseStatus(HttpStatus.CREATED)
+    public MotoDto createNewMoto(@RequestBody MotoDto newMoto) {
+        return motoService.create(newMoto);
+    }
+
     @GetMapping("/moto")
     public CollectionModel<EntityModel<MotoDto>> getAllMoto() {
         return motoService.readAll();
@@ -34,13 +40,7 @@ public class MotoController {
         return motoService.readById(id);
     }
 
-    @PostMapping("/moto")
-    @ResponseStatus(HttpStatus.CREATED)
-    public MotoDto createNewMoto(@RequestBody MotoDto newMoto) {
-        return motoService.create(newMoto);
-    }
-
-    @PutMapping("moto/{id}")
+    @PutMapping("/moto/{id}")
     public MotoDto updateMoto(@RequestBody MotoDto newMoto, @PathVariable Long id) {
         return motoService.update(newMoto, id);
     }

@@ -33,6 +33,20 @@ public class CarServiceImpl implements VehicleService<CarDto> {
     }
 
     @Override
+    public CarDto create(CarDto vehicle) {
+        Car car = new Car(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getDoors(), vehicle.getFuel());
+        carRepository.save(car);
+        return vehicle.builder()
+                .id(car.getId())
+                .brand(vehicle.getBrand())
+                .engineCapacity(vehicle.getEngineCapacity())
+                .vehicleYear(vehicle.getVehicleYear())
+                .fuel(vehicle.getFuel())
+                .doors(vehicle.getDoors())
+                .build();
+    }
+
+    @Override
     public CollectionModel<EntityModel<CarDto>> readAll() {
         Stream<CarDto> cars = carRepository.findAll().stream()
                 .map(car -> new CarDto(car.getId(), car.getBrand(), car.getVehicleYear(), car.getEngineCapacity(), Doors.createDoors(car.getDoors()), car.getFuel()));
@@ -47,13 +61,6 @@ public class CarServiceImpl implements VehicleService<CarDto> {
                 .orElseThrow(() -> new VehicleNotFoundException(id));
         CarDto carDto = new CarDto(car.getId(), car.getBrand(), car.getVehicleYear(), car.getEngineCapacity(), Doors.createDoors(car.getDoors()), car.getFuel());
         return carModelAssembler.toModel(carDto);
-    }
-
-    @Override
-    public CarDto create(CarDto vehicle) {
-        Car car = new Car(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getDoors(), vehicle.getFuel());
-        carRepository.save(car);
-        return vehicle;
     }
 
     @Override

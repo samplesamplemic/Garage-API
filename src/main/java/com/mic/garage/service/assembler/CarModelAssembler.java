@@ -21,7 +21,4 @@ public class CarModelAssembler implements RepresentationModelAssembler<CarDto, E
                 linkTo(methodOn(CarController.class).getOneCar(car.getId())).withSelfRel(),
                 linkTo(methodOn(CarController.class).getAllCars()).withRel("cars"));
     }
-
-    public void toModel(EntityModel<CarDto> carDtoEntityModel) {
-    }
 }

@@ -11,11 +11,11 @@ import java.util.List;
 public interface VehicleService<T> {
     T create(T vehicle);
 
-    T update(T vehicle, Long id);
-
     CollectionModel<EntityModel<T>> readAll();
 
     EntityModel<T> readById(Long id);
+
+    T update(T vehicle, Long id);
 
     void delete(Long id);
 }

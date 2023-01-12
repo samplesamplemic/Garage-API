@@ -32,6 +32,19 @@ public class MotoServiceImpl implements VehicleService<MotoDto> {
     }
 
     @Override
+    public MotoDto create(MotoDto vehicle) {
+        Moto moto = new Moto(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getTimes());
+        motoRepository.save(moto);
+        return vehicle.builder()
+                .id(moto.getId())
+                .brand(vehicle.getBrand())
+                .engineCapacity(vehicle.getEngineCapacity())
+                .vehicleYear(vehicle.getVehicleYear())
+                .times(vehicle.getTimes())
+                .build();
+    }
+
+    @Override
     public CollectionModel<EntityModel<MotoDto>> readAll() {
         Stream<MotoDto> moto = motoRepository.findAll().stream()
                 .map(mot -> new MotoDto(mot.getId(), mot.getBrand(), mot.getVehicleYear(), mot.getEngineCapacity(), mot.getTimes()));
@@ -46,13 +59,6 @@ public class MotoServiceImpl implements VehicleService<MotoDto> {
                 .orElseThrow(() -> new VehicleNotFoundException(id));
         MotoDto motoDto = new MotoDto(moto.getId(), moto.getBrand(), moto.getVehicleYear(), moto.getEngineCapacity(), moto.getTimes());
         return motoModelAssembler.toModel(motoDto);
-    }
-
-    @Override
-    public MotoDto create(MotoDto vehicle) {
-        Moto moto = new Moto(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getTimes());
-        motoRepository.save(moto);
-        return vehicle;
     }
 
     @Override
