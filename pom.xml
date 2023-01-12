@@ -76,6 +76,46 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>5.0.0</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <prefix>git</prefix>
+                    <dateFormat>dd-MM-yyyy '@' HH:mm:ss z</dateFormat>
+                    <dateFormatTimeZone>${user.timezone}</dateFormatTimeZone>
+                    <verbose>false</verbose>
+
+                    <!-- ALTERNATE SETUP - GENERATE FILE -->
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    <format>properties</format>
+                    <skipPoms>true</skipPoms>
+                    <injectAllReactorProjects>true</injectAllReactorProjects>
+                    <failOnNoGitDirectory>true</failOnNoGitDirectory>
+                    <failOnUnableToExtractRepoInfo>true</failOnUnableToExtractRepoInfo>
+                    <skip>false</skip>
+                    <runOnlyOnce>false</runOnlyOnce>
+                    <abbrevLength>7</abbrevLength>
+                    <commitIdGenerationMode>flat</commitIdGenerationMode>
+                </configuration>
             </plugin>
         </plugins>
     </build>

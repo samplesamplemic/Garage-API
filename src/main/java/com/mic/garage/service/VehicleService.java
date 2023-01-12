@@ -6,8 +6,9 @@ import org.springframework.hateoas.EntityModel;
 import java.util.List;
 
 // DAO: data access object || Structural patter
-// It provides to encapsulating the details of the persistence layer and providing a CRUD interface
-// to keep domain model/business logic completely decoupled from persistence layer
+// It provides to encapsulating/isolating the details of the persistence layer and providing a CRUD interface
+// to keep application/business layer completely decoupled from persistence layer
+// VehicleDao
 public interface VehicleService<T> {
     T create(T vehicle);
 
@@ -20,4 +21,4 @@ public interface VehicleService<T> {
     void delete(Long id);
 }
 
-//T = Dto model - for command (manipulate data) operation || S = Entity model - for query (read data) operation
+//T = Dto model - for command (manipulate data) operation && for query (read data) operation

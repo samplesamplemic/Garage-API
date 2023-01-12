@@ -21,7 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 //Without @Service annotation, give back this error:
 //Parameter 1 of constructor in com.mic.garage.controller.VanController required a bean of type 'com.mic.garage.service.VanServiceImpl' that could not be found.
-@Service
+@Service //VanDao
 public class VanServiceImpl implements VehicleService<VanDto> {
 
     @Autowired

@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Service
+@Service // CarDao
 public class CarServiceImpl implements VehicleService<CarDto> {
 
     @Autowired

@@ -67,7 +67,7 @@ class GarageApplicationTests {
 
     @Test
     void testCarRepositorySave() {
-        Car car = carRepository.save(new Car(Doors.createDoors(3), Fuel.DIESEL, "Alfa Romeo", 2011, 1300));
+        Car car = carRepository.save(new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL));
         assertThat(car).hasFieldOrPropertyWithValue("brand", "Alfa Romeo");
     }
 }

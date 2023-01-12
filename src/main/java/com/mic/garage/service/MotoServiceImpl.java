@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Service
+@Service // MotoDao
 public class MotoServiceImpl implements VehicleService<MotoDto> {
 
     @Autowired
@@ -47,7 +47,7 @@ public class MotoServiceImpl implements VehicleService<MotoDto> {
     @Override
     public CollectionModel<EntityModel<MotoDto>> readAll() {
         Stream<MotoDto> moto = motoRepository.findAll().stream()
-                .map(mot -> new MotoDto(mot.getId(), mot.getBrand(), mot.getVehicleYear(), mot.getEngineCapacity(), mot.getTimes()));
+                .map(el -> new MotoDto(el.getId(), el.getBrand(), el.getVehicleYear(), el.getEngineCapacity(), el.getTimes()));
         List<EntityModel<MotoDto>> motoDto = moto.map(motoModelAssembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(motoDto, linkTo(methodOn(MotoController.class).getAllMoto()).withSelfRel());
