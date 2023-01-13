@@ -3,6 +3,7 @@ package com.mic.garage.model;
 import com.mic.garage.entity.Times;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
+import org.bouncycastle.asn1.cms.Time;
 import org.springframework.hateoas.server.core.Relation;
 
 @Getter

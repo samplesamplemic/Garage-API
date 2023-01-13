@@ -42,6 +42,7 @@ public class VanController {
     }
 
     @DeleteMapping("/van/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteVan(@PathVariable Long id){
         vanService.delete(id);
     }

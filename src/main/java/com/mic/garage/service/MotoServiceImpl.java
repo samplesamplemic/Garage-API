@@ -33,7 +33,7 @@ public class MotoServiceImpl implements VehicleService<MotoDto> {
 
     @Override
     public MotoDto create(MotoDto vehicle) {
-        Moto moto = new Moto(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getTimes());
+        Moto moto = new Moto(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getTimes());//Times.createTimes(Integer.valueOf(vehicle.getTimes().toString())));
         motoRepository.save(moto);
         return vehicle.builder()
                 .id(moto.getId())
@@ -86,6 +86,8 @@ public class MotoServiceImpl implements VehicleService<MotoDto> {
 
     @Override
     public void delete(Long id) {
+        motoRepository.findById(id)
+                .orElseThrow(() -> new VehicleNotFoundException(id));
         motoRepository.deleteById(id);
     }
 }

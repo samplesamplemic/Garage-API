@@ -86,6 +86,8 @@ public class VanServiceImpl implements VehicleService<VanDto> {
 
     @Override
     public void delete(Long id) {
+        vanRepository.findById(id)
+                .orElseThrow(() -> new VehicleNotFoundException(id));
         vanRepository.deleteById(id);
     }
 }

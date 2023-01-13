@@ -24,6 +24,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -38,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.IOException;
 
 @SpringBootTest
-@AutoConfigureMockMvc //bean of MockMvc
+@AutoConfigureMockMvc //bean of MockMvc injected by @SpringBootTest
 class GarageApplicationTests {
 
     private HttpResponse httpResponse;
@@ -51,11 +52,9 @@ class GarageApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
     private CarServiceImpl carService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -69,8 +68,7 @@ class GarageApplicationTests {
     }
 
     @Test
-        //an error of type i/o;
-    void testStatusCodeNotFound() throws IOException {
+    void testStatusCodeNotFound() throws IOException { //an error of type i/o;
         //HttpUriRequest: Extended version of the HttpRequest interface that
         //provides convenience methods to access request properties such as request URI and method type.
         String id = "3";
@@ -80,7 +78,7 @@ class GarageApplicationTests {
     }
 
     @Test
-    void testResponseBodyNotFoundException() throws IOException {
+    void testResponseBodyNotFoundExceptionAdvice() throws IOException {
         Long id = Long.valueOf(30);
         url = "http://localhost:8080/garage/moto/" + id;
         httpResponse = HttpClientBuilder.create().build().execute(new HttpGet(url));
@@ -102,15 +100,15 @@ class GarageApplicationTests {
         //doNothing() is Mockito's default behavior for void methods.
         //willDoNothing().given(carService).delete(carId);
         ResultActions response = mockMvc.perform(delete("http://localhost:8080/garage/cars/{id}", carId));
-        response.andExpect(status().isOk())
+        response.andExpect(status().isAccepted())
                 .andDo(print());
     }
 
-//    @Test
-//    void testNotFoundDeleteCar() throws Exception {
-//        willDoNothing().given(carService).delete(1L);
-//        mockMvc.perform(delete("http://localhost:8080/garage/cars/{id}", 2L))
-//                .andExpect(status().isNotFound())
-//                .andDo(print());
-//    }
+    @Test
+    void testNotFoundDeleteCar() throws Exception {
+        Car car = carRepository.save(new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL));
+        carRepository.deleteById(car.getId());
+        boolean deleteCar = carRepository.findById(car.getId()).isPresent();
+        assertThat(deleteCar).isFalse();
+    }
 }

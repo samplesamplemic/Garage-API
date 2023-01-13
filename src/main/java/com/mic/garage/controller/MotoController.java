@@ -8,6 +8,7 @@ import com.mic.garage.service.assembler.MotoModelAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,9 +25,17 @@ public class MotoController {
         this.motoService = motoService;
     }
 
-    @PostMapping("/moto")
+    @PostMapping(path = "/moto", consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     public MotoDto createNewMoto(@RequestBody MotoDto newMoto) {
+        return motoService.create(newMoto);
+    }
+
+    @PostMapping(path = "/moto", consumes = "application/x-www-form-urlencoded")
+    @ResponseStatus(HttpStatus.CREATED)
+    //ERROR - Cannot convert value of type 'java.lang.String' to required type 'com.mic.garage.entity.Times':
+    // no matching editors or conversion strategy found - the rest work correctly
+    public MotoDto createNewMotoFormUrlEncoded(MotoDto newMoto) {
         return motoService.create(newMoto);
     }
 
@@ -46,6 +55,7 @@ public class MotoController {
     }
 
     @DeleteMapping("/moto/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteMoto(@PathVariable Long id) {
         motoService.delete(id);
     }
