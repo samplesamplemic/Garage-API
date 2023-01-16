@@ -1,8 +1,6 @@
 
 # Garage API
 
-***
-
 ### Built With
 - [![Spring][Spring.io]][Spring-url]
 
