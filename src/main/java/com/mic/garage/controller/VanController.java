@@ -31,7 +31,7 @@ public class VanController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created a new vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                            schema = @Schema(implementation = VanDto.class))}),
             @ApiResponse(responseCode = "406", description = "Invalid value")
     })
     @PostMapping("/van")
@@ -44,7 +44,7 @@ public class VanController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found list of vehicles",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))})
+                            schema = @Schema(implementation = VanDto.class))})
     })
     @GetMapping("/van")
     public CollectionModel<EntityModel<VanDto>> getAllVan() {
@@ -55,7 +55,7 @@ public class VanController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                            schema = @Schema(implementation = VanDto.class))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @GetMapping("/van/{id}")
@@ -67,7 +67,7 @@ public class VanController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                            schema = @Schema(implementation = VanDto.class))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @PutMapping("/van/{id}")
@@ -79,7 +79,7 @@ public class VanController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Deleted vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                            schema = @Schema(implementation = VanDto.class))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @DeleteMapping("/van/{id}")

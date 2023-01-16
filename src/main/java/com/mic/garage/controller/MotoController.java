@@ -71,7 +71,7 @@ public class MotoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                            schema = @Schema(implementation = MotoDto.class))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @GetMapping("/moto/{id}")
@@ -83,7 +83,7 @@ public class MotoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                            schema = @Schema(implementation = MotoDto.class))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @PutMapping("/moto/{id}")
@@ -95,7 +95,7 @@ public class MotoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Deleted vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                            schema = @Schema(implementation = MotoDto.class))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @DeleteMapping("/moto/{id}")
