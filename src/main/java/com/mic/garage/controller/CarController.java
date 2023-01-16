@@ -4,6 +4,12 @@ import com.mic.garage.entity.Car;
 import com.mic.garage.model.CarDto;
 import com.mic.garage.service.CarServiceImpl;
 import com.mic.garage.service.assembler.CarModelAssembler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -25,12 +31,25 @@ public class CarController {
         this.carService = carService;
     }
 
+    @Operation(summary = "Create a new vehicle")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created a new vehicle",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CarDto.class))}),
+            @ApiResponse(responseCode = "406", description = "Invalid value")
+    })
     @PostMapping("/cars")
     @ResponseStatus(HttpStatus.CREATED)
     public CarDto createNewCar(@RequestBody CarDto newCar) {
         return carService.create(newCar);
     }
 
+    @Operation(summary = "Get the vehicle list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found list of vehicles",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CarDto.class))})
+    })
     @GetMapping("/cars")
     //<CollectionModel<>>: Spring Hateoas container - it's aimed to encapsulating collection of resource
     //instead a single resource like <EntityModel<>>
@@ -38,19 +57,40 @@ public class CarController {
         return carService.readAll();
     }
 
+    @Operation(summary = "Get a vehicle by its id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the vehicle",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CarDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found")
+    })
     @GetMapping("/cars/{id}")
-    public EntityModel<CarDto> getOneCar(@PathVariable Long id) {
+    public EntityModel<CarDto> getOneCar(@Parameter(description = "id of vehicle to be searched") @PathVariable Long id) {
         return carService.readById(id);
     }
 
+    @Operation(summary = "Modify a vehicle by its id or create one, if id doesn't found")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Created vehicle",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CarDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found")
+    })
     @PutMapping("/cars/{id}")
-    public CarDto updateCar(@RequestBody CarDto newCar, @PathVariable Long id) {
+    public CarDto updateCar(@Parameter(description = "id of vehicle to be searched") @RequestBody CarDto newCar, @PathVariable Long id) {
         return carService.update(newCar, id);
     }
 
+    @Operation(summary = "Delete a vehicle by its id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Deleted vehicle",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CarDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found")
+    })
     @DeleteMapping("/cars/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteCar(@PathVariable Long id) {
+    public void deleteCar(@Parameter(description = "id of vehicle to be searched")  @PathVariable Long id) {
         carService.delete(id);
     }
 }

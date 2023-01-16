@@ -9,8 +9,8 @@ public class Car extends Vehicle {
     private Doors doors;
 
     // @Embedded
-    //@Enumerated(EnumType.STRING)
     //@Column(name = "fuel")
+    @Enumerated(EnumType.STRING)
     private Fuel fuel;
 
     public Car() {

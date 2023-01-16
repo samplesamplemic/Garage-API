@@ -4,14 +4,13 @@ import com.mic.garage.entity.*;
 import com.mic.garage.repository.CarRepository;
 import com.mic.garage.repository.MotoRepository;
 import com.mic.garage.repository.VanRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.config.server.EnableConfigServer;
 
-//@EnableConfigServer
+
+//It's important to mention that the latest version of Swagger specification, now known as OpenAPI 3.0,
+// is better supported by the Springdoc project and should be used for documenting Spring REST API.
 @SpringBootApplication
 public class GarageApplication implements CommandLineRunner {
 
@@ -32,7 +31,7 @@ public class GarageApplication implements CommandLineRunner {
     //By implementing the CommandLineRunner, the run() method will be executed after the application starts.
     @Override
     public void run(String... args) throws Exception {
-        carRepository.save(new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL));
+        //carRepository.save(new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL));
         motoRepository.save(new Moto("Kawasaki", 2013, 30, Times.createTimes(4)));
         vanRepository.save(new Van("Mercedes", 2010, 3000, CargoCapacity.createCargoCapacity(700)));
     }

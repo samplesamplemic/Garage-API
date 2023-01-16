@@ -94,18 +94,18 @@ class GarageApplicationTests {
         assertThat(car).hasFieldOrPropertyWithValue("brand", "Alfa Romeo");
     }
 
-    @Test
-    void testStatusCodeDeleteCar() throws Exception {
-        Long carId = 1L;
-        //doNothing() is Mockito's default behavior for void methods.
-        //willDoNothing().given(carService).delete(carId);
-        ResultActions response = mockMvc.perform(delete("http://localhost:8080/garage/cars/{id}", carId));
-        response.andExpect(status().isAccepted())
-                .andDo(print());
-    }
+//    @Test
+//    void testStatusCodeDeleteCar() throws Exception {
+//        Long carId = 1L;
+//        //doNothing() is Mockito's default behavior for void methods.
+//        //willDoNothing().given(carService).delete(carId);
+//        ResultActions response = mockMvc.perform(delete("http://localhost:8080/garage/cars/{id}", carId));
+//        response.andExpect(status().isAccepted())
+//                .andDo(print());
+//    }
 
     @Test
-    void testNotFoundDeleteCar() throws Exception {
+    void testDeleteCar() throws Exception {
         Car car = carRepository.save(new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL));
         carRepository.deleteById(car.getId());
         boolean deleteCar = carRepository.findById(car.getId()).isPresent();

@@ -21,7 +21,7 @@ public enum Fuel {
     @JsonCreator
     public static Fuel decode(final String fuel) {
         //Stream: wrappers around a data source
-        return Stream.of(Fuel.values()).filter(el -> el.fuel.equalsIgnoreCase(fuel)).findFirst().orElseThrow(() ->new VehicleArgsNotAcceptedException("Fuel must be Diesel or Petrol"));
+        return Stream.of(Fuel.values()).filter(el -> el.fuel.equalsIgnoreCase(fuel)).findFirst().orElseThrow(() -> new VehicleArgsNotAcceptedException("Fuel must be Diesel or Petrol"));
     }
 
     //serialize for the get request
@@ -29,5 +29,4 @@ public enum Fuel {
     public String getFuel() {
         return fuel;
     }
-
 }
