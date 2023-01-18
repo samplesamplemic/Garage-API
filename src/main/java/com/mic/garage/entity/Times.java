@@ -3,6 +3,7 @@ package com.mic.garage.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.mic.garage.exception.VehicleArgsNotAcceptedException;
+import jakarta.persistence.Embeddable;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.io.Serializable;
 //<Serializable> necessary to transfer entities over-the-wire
 //not needed to persistence only
 
-//@Embeddable
+@Embeddable
 //@Immutable //should be use on root entities only??
 //generate a private constructor to respect self-validation with factory-method
 @NoArgsConstructor(staticName = "private")

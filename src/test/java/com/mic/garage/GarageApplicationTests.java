@@ -46,6 +46,7 @@ class GarageApplicationTests {
     private String url;
 
     @Autowired //? automatically connection with bean
+            //can be substituted by a constructor;
     //if autowired not used, there is an error: java.lang.NullPointerException:
     // Cannot invoke "com.mic.garage.repository.CarRepository.save(Object)" because "this.carRepository" is null
     CarRepository carRepository;
@@ -94,15 +95,15 @@ class GarageApplicationTests {
         assertThat(car).hasFieldOrPropertyWithValue("brand", "Alfa Romeo");
     }
 
-//    @Test
-//    void testStatusCodeDeleteCar() throws Exception {
-//        Long carId = 1L;
-//        //doNothing() is Mockito's default behavior for void methods.
-//        //willDoNothing().given(carService).delete(carId);
-//        ResultActions response = mockMvc.perform(delete("http://localhost:8080/garage/cars/{id}", carId));
-//        response.andExpect(status().isAccepted())
-//                .andDo(print());
-//    }
+    @Test
+    void testStatusCodeDeleteCar() throws Exception {
+        Long carId = 1L;
+        //doNothing() is Mockito's default behavior for void methods.
+        //willDoNothing().given(carService).delete(carId);
+        ResultActions response = mockMvc.perform(delete("http://localhost:8080/garage/cars/{id}", carId));
+        response.andExpect(status().isAccepted())
+                .andDo(print());
+    }
 
     @Test
     void testDeleteCar() throws Exception {

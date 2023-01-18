@@ -28,7 +28,7 @@ import java.util.Objects;
 //@DiscriminatorColumn(name = "vehicle_type", discriminatorType = DiscriminatorType.INTEGER)
 public class Vehicle {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //allow an automatic unique ID generation
     private Long id;
     private String brand;
     private int vehicleYear;

@@ -7,7 +7,9 @@ import jakarta.persistence.*;
 //@DiscriminatorValue("1")
 public class Moto extends Vehicle {
 
-   // @Embedded
+    @Embedded
+    //without @Embedded and @Embeddable on Times class, the time column in database saves
+    //the value as reference to object(times=34dfds9833245235);
     private Times times;
 
     public Moto() {

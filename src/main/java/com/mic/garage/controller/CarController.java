@@ -32,10 +32,12 @@ public class CarController {
     }
 
     @Operation(summary = "Create a new vehicle")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {@Content(mediaType = "application/json",
+            schema = @Schema(ref = "#/components/schemas/Car"))})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created a new vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                           schema = @Schema(ref = "#/components/schemas/Car"))}),
             @ApiResponse(responseCode = "406", description = "Invalid value")
     })
     @PostMapping("/cars")

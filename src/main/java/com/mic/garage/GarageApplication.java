@@ -4,6 +4,7 @@ import com.mic.garage.entity.*;
 import com.mic.garage.repository.CarRepository;
 import com.mic.garage.repository.MotoRepository;
 import com.mic.garage.repository.VanRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,12 +15,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class GarageApplication implements CommandLineRunner {
 
-    private final CarRepository carRepository;
     private final MotoRepository motoRepository;
     private final VanRepository vanRepository;
 
-    public GarageApplication(CarRepository carRepository, MotoRepository motoRepository, VanRepository vanRepository) {
-        this.carRepository = carRepository;
+    //injection dependency by constructor;
+    public GarageApplication( MotoRepository motoRepository, VanRepository vanRepository) {
         this.motoRepository = motoRepository;
         this.vanRepository = vanRepository;
     }
