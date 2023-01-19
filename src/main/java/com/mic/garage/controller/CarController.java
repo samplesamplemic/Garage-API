@@ -50,7 +50,7 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found list of vehicles",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(ref = "#/components/schemas/embedded"))})
+                            schema = @Schema(ref = "#/components/schemas/getAll"))})
     })
     @GetMapping("/cars")
     //<CollectionModel<>>: Spring Hateoas container - it's aimed to encapsulating collection of resource
@@ -63,7 +63,7 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(ref = "#/components/schemas/Car"))}),
+                            schema = @Schema(ref = "#/components/schemas/getOne"))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @GetMapping("/cars/{id}")
