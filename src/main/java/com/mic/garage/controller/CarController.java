@@ -50,7 +50,7 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found list of vehicles",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))})
+                            schema = @Schema(ref = "#/components/schemas/embedded"))})
     })
     @GetMapping("/cars")
     //<CollectionModel<>>: Spring Hateoas container - it's aimed to encapsulating collection of resource
@@ -63,7 +63,7 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                            schema = @Schema(ref = "#/components/schemas/Car"))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @GetMapping("/cars/{id}")
@@ -75,7 +75,7 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                            schema = @Schema())}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @PutMapping("/cars/{id}")
@@ -87,7 +87,7 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Deleted vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CarDto.class))}),
+                            schema = @Schema(ref = "#/components/schemas/Car"))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @DeleteMapping("/cars/{id}")
