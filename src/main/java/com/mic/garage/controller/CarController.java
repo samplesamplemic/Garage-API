@@ -1,6 +1,5 @@
 package com.mic.garage.controller;
 
-import com.mic.garage.entity.Car;
 import com.mic.garage.model.CarDto;
 import com.mic.garage.service.CarServiceImpl;
 import com.mic.garage.service.assembler.CarModelAssembler;

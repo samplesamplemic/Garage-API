@@ -1,6 +1,5 @@
 package com.mic.garage.config;
 
-import com.mic.garage.model.CarDto;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

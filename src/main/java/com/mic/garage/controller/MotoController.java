@@ -1,8 +1,5 @@
 package com.mic.garage.controller;
 
-import com.mic.garage.exception.VehicleNotFoundException;
-import com.mic.garage.entity.Moto;
-import com.mic.garage.model.CarDto;
 import com.mic.garage.model.MotoDto;
 import com.mic.garage.service.MotoServiceImpl;
 import com.mic.garage.service.assembler.MotoModelAssembler;

@@ -2,7 +2,6 @@ package com.mic.garage.service;
 
 import com.mic.garage.controller.MotoController;
 import com.mic.garage.entity.Moto;
-import com.mic.garage.entity.Times;
 import com.mic.garage.exception.VehicleNotFoundException;
 import com.mic.garage.model.MotoDto;
 import com.mic.garage.repository.MotoRepository;

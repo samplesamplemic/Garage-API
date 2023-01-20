@@ -7,21 +7,12 @@ import com.mic.garage.exception.VehicleNotFoundException;
 import com.mic.garage.model.CarDto;
 import com.mic.garage.repository.CarRepository;
 import com.mic.garage.service.assembler.CarModelAssembler;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.persistence.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

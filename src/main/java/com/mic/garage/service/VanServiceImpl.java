@@ -1,7 +1,6 @@
 package com.mic.garage.service;
 
 import com.mic.garage.controller.VanController;
-import com.mic.garage.entity.Doors;
 import com.mic.garage.entity.Van;
 import com.mic.garage.exception.VehicleNotFoundException;
 import com.mic.garage.model.VanDto;

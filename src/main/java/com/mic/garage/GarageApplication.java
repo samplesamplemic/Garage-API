@@ -1,10 +1,8 @@
 package com.mic.garage;
 
 import com.mic.garage.entity.*;
-import com.mic.garage.repository.CarRepository;
 import com.mic.garage.repository.MotoRepository;
 import com.mic.garage.repository.VanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

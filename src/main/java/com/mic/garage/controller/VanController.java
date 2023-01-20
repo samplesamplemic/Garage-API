@@ -1,6 +1,5 @@
 package com.mic.garage.controller;
 
-import com.mic.garage.model.CarDto;
 import com.mic.garage.model.VanDto;
 import com.mic.garage.service.VanServiceImpl;
 import com.mic.garage.service.assembler.VanModelAssembler;

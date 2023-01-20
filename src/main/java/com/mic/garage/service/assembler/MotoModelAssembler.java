@@ -1,7 +1,6 @@
 package com.mic.garage.service.assembler;
 
 import com.mic.garage.controller.MotoController;
-import com.mic.garage.entity.Moto;
 import com.mic.garage.model.MotoDto;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
