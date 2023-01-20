@@ -4,7 +4,7 @@
 
 Restful API service based on three types of vehicles: car, moto and van. 
 \
-Framework: [Spring][Spring-url], <strong>spring-boot</strong> - open source framework used to ....
+Framework: [Spring][Spring-url], <strong>Spring Boot</strong> - is a tool that makes developing web application and microservices with Spring Framework faster and easier .
 \
 Database: [h2][h2-url], the java SQL  in-memory database.
 \
@@ -12,10 +12,10 @@ Documentation: [springdoc-openapi][Springdoc-url], java library helps to automat
 <br></br>
 Pattern used:
 
-- DAO pattern to isolate persistence layer, developed into service folder, 
+- DAO pattern to isolate persistence layer, developed into <i>service</i> folder, 
   from the business layer, i.e. the controllers;
-- Value Object and Factory Method for some properties validation in the entity;
-- DTO;
+- Value Object and Factory Method for some properties validation in the entity, i.e. Times, Doors and CargoCapacity classes;
+- DTO, developed into <i>model</i> folder;
 
 ***
 
