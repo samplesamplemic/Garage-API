@@ -33,13 +33,15 @@ public class MotoController {
     }
 
     @Operation(summary = "Create a new vehicle")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {@Content(mediaType = "application/json",
+            schema = @Schema(ref = "#/components/schemas/moto"))})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created a new vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MotoDto.class))}),
+                            schema = @Schema(ref = "#/components/schemas/motoWithId"))}),
             @ApiResponse(responseCode = "406", description = "Invalid value")
     })
-    @PostMapping(path = "/moto", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping("/moto")
     @ResponseStatus(HttpStatus.CREATED)
     public MotoDto createNewMoto(@RequestBody MotoDto newMoto) {
         return motoService.create(newMoto);
@@ -47,20 +49,19 @@ public class MotoController {
 
     //------------------------------------------------
     // attempt to add another media type format for requests - BUGGED
-    @PostMapping(path = "/moto", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    //@PostMapping(path = "/moto", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    //@ResponseStatus(HttpStatus.CREATED)
     //ERROR - Cannot convert value of type 'java.lang.String' to required type 'com.mic.garage.entity.Times':
     // no matching editors or conversion strategy found - the rest work correctly
-    public MotoDto createNewMotoFormUrlEncoded(MotoDto newMoto) {
-        return motoService.create(newMoto);
-    }
+    //public MotoDto createNewMotoFormUrlEncoded(MotoDto newMoto) {
+     //   return motoService.create(newMoto);}
     //--------------------------------------------
 
     @Operation(summary = "Get the vehicle list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found list of vehicles",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MotoDto.class))})
+                            schema = @Schema(ref = "#/components/schemas/getAllMoto"))})
     })
     @GetMapping("/moto")
     public CollectionModel<EntityModel<MotoDto>> getAllMoto() {
@@ -71,7 +72,7 @@ public class MotoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MotoDto.class))}),
+                            schema = @Schema(ref = "#/components/schemas/getOneMoto"))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @GetMapping("/moto/{id}")
@@ -80,10 +81,12 @@ public class MotoController {
     }
 
     @Operation(summary = "Modify a vehicle by its id or create one, if id doesn't found")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json",
+            schema = @Schema(ref = "#/components/schemas/moto")))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MotoDto.class))}),
+                            schema = @Schema(ref = "#/components/schemas/motoWithId"))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @PutMapping("/moto/{id}")
@@ -93,9 +96,7 @@ public class MotoController {
 
     @Operation(summary = "Delete a vehicle by its id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Deleted vehicle",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MotoDto.class))}),
+            @ApiResponse(responseCode = "200", description = "Deleted vehicle"),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @DeleteMapping("/moto/{id}")

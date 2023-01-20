@@ -38,22 +38,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.IOException;
 
-@SpringBootTest
-@AutoConfigureMockMvc //bean of MockMvc injected by @SpringBootTest
+@SpringBootTest //run spring context
+@AutoConfigureMockMvc //bean of MockMvc injected by @SpringBootTes
 class GarageApplicationTests {
 
     private HttpResponse httpResponse;
     private String url;
 
-    @Autowired //? automatically connection with bean
-            //can be substituted by a constructor;
-    //if autowired not used, there is an error: java.lang.NullPointerException:
+    @Autowired //dependency injection by setter || can be substituted by a constructor;
+    // if autowired not used, there is an error: java.lang.NullPointerException:
     // Cannot invoke "com.mic.garage.repository.CarRepository.save(Object)" because "this.carRepository" is null
-    CarRepository carRepository;
+    private CarRepository carRepository; //final
 
     @Autowired
     private MockMvc mockMvc;
 
+    //@Mock specifies the fields in which Mockito should inject mock objects;
+    //@MockBean annotation to add mock objects to the Spring application context.
+    //Replace a bean that already exists in the application context with a mock
     @MockBean
     private CarServiceImpl carService;
 
@@ -61,6 +63,8 @@ class GarageApplicationTests {
     void setUp() {
     }
 
+    //1) controller/business layer
+    //Status code
     @Test
     void testStatusCodeFound() throws IOException {
         url = "http://localhost:8080/garage/moto";
@@ -79,6 +83,21 @@ class GarageApplicationTests {
     }
 
     @Test
+    void testStatusCodeNotFoundDeleteCar() throws Exception {
+        mockMvc.perform(delete("http://localhost:8080/garage/moto/2"))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    void testStatusCodeFoundDeleteCar() throws Exception {
+        carRepository.save(new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL));
+        mockMvc.perform(delete("http://localhost:8080/garage/cars/1"))
+                .andExpect(status().isAccepted())
+                .andDo(print());
+    }
+
+    @Test
     void testResponseBodyNotFoundExceptionAdvice() throws IOException {
         Long id = Long.valueOf(30);
         url = "http://localhost:8080/garage/moto/" + id;
@@ -89,20 +108,12 @@ class GarageApplicationTests {
         Assertions.assertEquals(ex.getMessage(), resBody);
     }
 
+    //1) repository/data & service layer
+
     @Test
     void testCarRepositorySave() {
         Car car = carRepository.save(new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL));
         assertThat(car).hasFieldOrPropertyWithValue("brand", "Alfa Romeo");
-    }
-
-    @Test
-    void testStatusCodeDeleteCar() throws Exception {
-        Long carId = 1L;
-        //doNothing() is Mockito's default behavior for void methods.
-        //willDoNothing().given(carService).delete(carId);
-        ResultActions response = mockMvc.perform(delete("http://localhost:8080/garage/cars/{id}", carId));
-        response.andExpect(status().isAccepted())
-                .andDo(print());
     }
 
     @Test
@@ -113,3 +124,4 @@ class GarageApplicationTests {
         assertThat(deleteCar).isFalse();
     }
 }
+

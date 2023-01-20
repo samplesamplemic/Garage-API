@@ -19,7 +19,7 @@ public class GarageApplication implements CommandLineRunner {
     private final VanRepository vanRepository;
 
     //injection dependency by constructor;
-    public GarageApplication( MotoRepository motoRepository, VanRepository vanRepository) {
+    public GarageApplication(MotoRepository motoRepository, VanRepository vanRepository) {
         this.motoRepository = motoRepository;
         this.vanRepository = vanRepository;
     }
@@ -31,7 +31,6 @@ public class GarageApplication implements CommandLineRunner {
     //By implementing the CommandLineRunner, the run() method will be executed after the application starts.
     @Override
     public void run(String... args) throws Exception {
-        //carRepository.save(new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL));
         motoRepository.save(new Moto("Kawasaki", 2013, 30, Times.createTimes(4)));
         vanRepository.save(new Van("Mercedes", 2010, 3000, CargoCapacity.createCargoCapacity(700)));
     }

@@ -28,23 +28,25 @@ public class VanController {
     }
 
     @Operation(summary = "Create a new vehicle")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = {@Content(mediaType = "application/json",
+            schema = @Schema(ref = "#/components/schemas/van"))})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created a new vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VanDto.class))}),
+                            schema = @Schema(ref = "#/components/schemas/vanWithId"))}),
             @ApiResponse(responseCode = "406", description = "Invalid value")
     })
     @PostMapping("/van")
     @ResponseStatus(HttpStatus.CREATED)
-    public VanDto createNewVan(@RequestBody VanDto newVan){
-        return  vanService.create(newVan);
+    public VanDto createNewVan(@RequestBody VanDto newVan) {
+        return vanService.create(newVan);
     }
 
     @Operation(summary = "Get the vehicle list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found list of vehicles",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VanDto.class))})
+                            schema = @Schema(ref = "#/components/schemas/getAllVan"))})
     })
     @GetMapping("/van")
     public CollectionModel<EntityModel<VanDto>> getAllVan() {
@@ -55,7 +57,7 @@ public class VanController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VanDto.class))}),
+                            schema = @Schema(ref = "#/components/schemas/getOneVan"))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @GetMapping("/van/{id}")
@@ -64,27 +66,27 @@ public class VanController {
     }
 
     @Operation(summary = "Modify a vehicle by its id or create one, if id doesn't found")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json",
+            schema = @Schema(ref = "#/components/schemas/van")))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VanDto.class))}),
+                            schema = @Schema(ref = "#/components/schemas/vanWithId"))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @PutMapping("/van/{id}")
-    public VanDto updateVan(@Parameter(description = "id of vehicle to be searched") @RequestBody VanDto newVan, @PathVariable Long id){
+    public VanDto updateVan(@Parameter(description = "id of vehicle to be searched") @RequestBody VanDto newVan, @PathVariable Long id) {
         return vanService.update(newVan, id);
     }
 
     @Operation(summary = "Delete a vehicle by its id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Deleted vehicle",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VanDto.class))}),
+            @ApiResponse(responseCode = "200", description = "Deleted vehicle"),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @DeleteMapping("/van/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteVan(@Parameter(description = "id of vehicle to be searched") @PathVariable Long id){
+    public void deleteVan(@Parameter(description = "id of vehicle to be searched") @PathVariable Long id) {
         vanService.delete(id);
     }
 }

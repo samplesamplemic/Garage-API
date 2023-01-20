@@ -37,7 +37,7 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created a new vehicle",
                     content = {@Content(mediaType = "application/json",
-                           schema = @Schema(ref = "#/components/schemas/Car"))}),
+                            schema = @Schema(ref = "#/components/schemas/CarWithId"))}),
             @ApiResponse(responseCode = "406", description = "Invalid value")
     })
     @PostMapping("/cars")
@@ -50,7 +50,7 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found list of vehicles",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(ref = "#/components/schemas/getAll"))})
+                            schema = @Schema(ref = "#/components/schemas/getAllCar"))})
     })
     @GetMapping("/cars")
     //<CollectionModel<>>: Spring Hateoas container - it's aimed to encapsulating collection of resource
@@ -63,7 +63,7 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(ref = "#/components/schemas/getOne"))}),
+                            schema = @Schema(ref = "#/components/schemas/getOneCar"))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @GetMapping("/cars/{id}")
@@ -72,10 +72,12 @@ public class CarController {
     }
 
     @Operation(summary = "Modify a vehicle by its id or create one, if id doesn't found")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json",
+            schema = @Schema(ref = "#/components/schemas/Car")))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created vehicle",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema())}),
+                            schema = @Schema(ref = "#/components/schemas/CarWithId"))}),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @PutMapping("/cars/{id}")
@@ -85,14 +87,12 @@ public class CarController {
 
     @Operation(summary = "Delete a vehicle by its id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Deleted vehicle",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(ref = "#/components/schemas/Car"))}),
+            @ApiResponse(responseCode = "202", description = "Deleted vehicle"),
             @ApiResponse(responseCode = "404", description = "Vehicle not found")
     })
     @DeleteMapping("/cars/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteCar(@Parameter(description = "id of vehicle to be searched")  @PathVariable Long id) {
+    public void deleteCar(@Parameter(description = "id of vehicle to be searched") @PathVariable Long id) {
         carService.delete(id);
     }
 }
