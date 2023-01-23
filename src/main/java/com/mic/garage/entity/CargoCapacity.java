@@ -21,7 +21,6 @@ public class CargoCapacity {
         if (cargoCapacity >= 0) {
             return new CargoCapacity(cargoCapacity);
         } else {
-            // throw new RuntimeException("The value of cargo Capacity must be positive.");
             throw new VehicleArgsNotAcceptedException("The value of cargo Capacity must be positive.");
         }
     }

@@ -46,7 +46,7 @@ public class CarServiceImpl implements VehicleService<CarDto> {
     }
 
     //Am I breaking single responsibility principle?? The service manages the persistence layer and
-    //applies the assembler to the responses body;
+    //applies the assembler;
     @Override
     public CollectionModel<EntityModel<CarDto>> readAll() {
         Stream<CarDto> cars = carRepository.findAll().stream()
@@ -93,10 +93,5 @@ public class CarServiceImpl implements VehicleService<CarDto> {
         carRepository.findById(id)
                 .orElseThrow(() -> new VehicleNotFoundException(id));
         carRepository.deleteById(id);
-//        if (carRepository.findById(id).isPresent()) {
-//            carRepository.deleteById(id);
-//        } else {
-//            new Throwable(new VehicleNotFoundException(id));
-//        }
     }
 }

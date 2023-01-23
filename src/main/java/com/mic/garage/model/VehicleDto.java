@@ -1,9 +1,7 @@
 package com.mic.garage.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -15,5 +13,5 @@ public class VehicleDto {
     private int vehicleYear;
     private int engineCapacity;
 
-   // abstract boolean exit();
+    // abstract boolean exit();
 }

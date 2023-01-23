@@ -19,7 +19,6 @@ import java.io.Serializable;
 @NoArgsConstructor(staticName = "private")
 public class Times implements Serializable {
 
-    //@Column
     private int times;
     private static List<Integer> rangeTimes = List.of(2, 4);
 
@@ -38,10 +37,8 @@ public class Times implements Serializable {
         if (rangeTimes.contains(times)) {
             return new Times(times);
         } else {
-            //throw new RuntimeException("The value of times must be 2 or 4.");
-            throw new VehicleArgsNotAcceptedException("The value of times must be 2 or 4.");
+             throw new VehicleArgsNotAcceptedException("The value of times must be 2 or 4.");
         }
-
         // return  Stream.of(rangeTimes).filter(el -> el.contains(times)).findFirst().orElseThrow(() -> new VehicleArgsNotAcceptedException("The value of times must be 2 or 4."));
     }
 
