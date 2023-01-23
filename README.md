@@ -3,8 +3,10 @@
 ### Description
 
 Rest API service based on three types of vehicles: car, moto and van. I initially followed this
-tutorial: [Building REST services with Spring][tutorial-rest-spring-url]. Implementation of Hateoas library
-to facilitate REST representations with self-ref hypermedia links.
+tutorial: [Building REST services with Spring][tutorial-rest-spring-url]. 
+\
+Implementation of Hateoas library
+to facilitate REST representations using hypermedia links.
 Three main branches of links to communicate with the application by JSON format, i.e. localhost:
 port/garage/${type-vehicle} (type-vehicle: cars - moto - van).
 I used a plugin, called <i>[git-commit-id-maven-plugin][git-commit-id-maven-url]</i>, with own configuration to request
