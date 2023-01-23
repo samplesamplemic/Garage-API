@@ -5,25 +5,29 @@
 Helpful tutorial: [Building REST services with Spring][tutorial-rest-spring-url].
 \
 Rest API service based on three types of vehicles: car, moto and van.
-\
-Implementation of Hateoas library to facilitate REST representations using hypermedia links.
 Three main branches of links to communicate with the application by JSON format, i.e. localhost:
 port/garage/${type-vehicle} (type-vehicle: cars - moto - van).
-I used a plugin, called <i>[git-commit-id-maven-plugin][git-commit-id-maven-url]</i>, with own configuration to request
-git local cached info
-at localhost:port/actuator/info(for the plugin to work properly you need to start the project with this command: <i>mvn
-spring-boot:run</i>).
 \
 **Framework**: [Spring][Spring-url], <strong>Spring Boot</strong> - is a tool that makes developing web application and
 microservices with Spring Framework faster and easier.
 \
 **Database**: [h2][h2-url], the java SQL in-memory database.
 \
-**Testing**: The testing area need to be improved. Integration test || Unit Test: <i>[JUnit-5][junit-url]</i>
+**Testing**: The testing area need to be improved. Integration test: <i>[Mockito][mockito-url]</i> || Unit Test: <i>[JUnit-5][junit-url]</i>
 \
 **Documentation**: [springdoc-openapi][Springdoc-url], java library helps to automate the generation of API
-documentation
-using spring boot projects.
+documentation using spring boot projects.
+\
+**Library**:
+\
+<i>[Hateoas][hateoas-url]</i> to facilitate REST representations using hypermedia links;
+\
+<i>[Actuator][actuator-url]</i> used to enabling production-ready features;
+\
+**Plugin**: <i>[Git-commit-id-maven-plugin][git-commit-id-maven-url]</i>, works with actuator and its own configuration to request
+git local cached info
+at localhost:port/actuator/info(for the plugin to work properly you need to start the project with this command: <i>mvn
+spring-boot:run</i>).
 <br></br>
 Pattern used:
 
@@ -53,11 +57,12 @@ Pattern used:
 - Swagger UI: http://localhost:port/swagger-ui/index.html
 - Documentation in JSON format: http://localhost:port/v3/api-docs
 - h2 database console: http://localhost:port/console/
+- actuator: http://localhost:port/actuator
 - git info: http://localhost:port/actuator/info
 
 ### Testing:
 
-- Integration test: [Mockito][mockito-url]. I divided into two section: business layer/controller tests and
+- Integration test: [Mockito][mockito-url]. I divided this part into two section: business layer tests and
   persistence/service layer tests;
 - Unit test: [JUnit-5][junit-url]
 
@@ -84,3 +89,7 @@ Pattern used:
 [tutorial-rest-spring-url]: https://spring.io/guides/tutorials/rest/
 
 [mockito-url]: https://site.mockito.org/
+
+[hateoas-url]: https://spring.io/projects/spring-hateoas
+
+[actuator-url]: https://www.baeldung.com/spring-boot-actuators
