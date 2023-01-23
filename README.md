@@ -2,7 +2,7 @@
 
 ### Description
 
-Rest API service based on three types of vehicles: car, moto and van. I initially followed this
+Rest API service based on three types of vehicles: car, moto and van. Helpful
 tutorial: [Building REST services with Spring][tutorial-rest-spring-url]. 
 \
 Implementation of Hateoas library
