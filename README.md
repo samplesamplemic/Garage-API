@@ -26,7 +26,7 @@ documentation using spring boot projects.
 \
 **Plugin**: <i>[Git-commit-id-maven-plugin][git-commit-id-maven-url]</i>, works with actuator and its own configuration to request
 git local cached info
-at localhost:port/actuator/info(for the plugin to work properly you need to start the project with this command: <i>mvn
+at localhost:port/actuator/info(if the plugin doesn't work properly you could try to start the project with this command: <i>mvn
 spring-boot:run</i>).
 <br></br>
 Pattern used:

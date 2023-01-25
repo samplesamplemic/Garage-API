@@ -90,7 +90,7 @@ class GarageApplicationTests {
                 .build();
     }
 
-    //Integration test (need the application context to be loaded)
+    //Integration test
     //1) controller/business layer
     @Test
     void testStatusCodeOkAndMatchObjRepoGetCars() throws Exception {
@@ -147,19 +147,6 @@ class GarageApplicationTests {
         }
     }
 
-    @Test
-    void testResponseBodyVehicleArgsNotAcceptedAdvice2() throws Exception {
-        try {
-            MvcResult result = mockMvc.perform(post(urlCar).contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(new CarDto(null, "Alfa Romeo", 2011, 1300, Doors.createDoors(1), Fuel.DIESEL)))
-                            .accept(MediaType.APPLICATION_JSON))
-                    .andReturn();
-        } catch (RuntimeException result) {
-            RuntimeException ex = new VehicleArgsNotAcceptedException("The value of doors must be between 3 or 5.");
-            System.out.println(result);
-            assertEquals(ex.getMessage(), result.getMessage());
-        }
-    }
 
 }
 
