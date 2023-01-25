@@ -29,6 +29,9 @@ public class GarageApplicationUnitTest {
         assertFalse(msgFail== ex.getMessage());
     }
 
+    //test toString method
+    //get and set method?
+    //self-validation in VO?
 }
 
 
