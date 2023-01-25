@@ -66,11 +66,12 @@ class GarageApplicationTests {
     String urlCar = "http://localhost:8080/garage/cars";
     Car car;
     CarDto carDto;
+
     @Autowired
     MockMvc mockMvc;
-
-    //@MockBean
     @Autowired
+    ObjectMapper objectMapper;
+    @Autowired //@MockBean
     CarRepository carRepository;
 
     @MockBean
@@ -82,26 +83,31 @@ class GarageApplicationTests {
         carRepository.save(car);
         CarDto.builder()
                 .brand(car.getBrand())
+                .vehicleYear(car.getVehicleYear())
+                .engineCapacity(car.getEngineCapacity())
+                .doors(Doors.createDoors(car.getDoors()))
+                .fuel(car.getFuel())
                 .build();
     }
 
+    //Integration test (need the application context to be loaded)
+    //1) controller/business layer
     @Test
-    void testStatusCodeOkGetCars() throws Exception {
-        //with @Autowired on repository work, with mockBean not
-        List<Car> cars = carRepository.findAll();
-        for(Car car : cars){
-            System.out.println(car);
-        }
+    void testStatusCodeOkAndMatchObjRepoGetCars() throws Exception {
         CarModelAssembler carModelAssembler = new CarModelAssembler();
-        Stream<CarDto> cars2 = carRepository.findAll().stream()
+        Stream<CarDto> carsStream = carRepository.findAll().stream()
                 .map(car -> new CarDto(car.getId(), car.getBrand(), car.getVehicleYear(), car.getEngineCapacity(), Doors.createDoors(car.getDoors()), car.getFuel()));
-        List<EntityModel<CarDto>> carsDto = cars2.map(carModelAssembler::toModel)
+        List<EntityModel<CarDto>> carsDto = carsStream.map(carModelAssembler::toModel)
                 .collect(Collectors.toList());
 
         when(carService.readAll()).thenReturn(CollectionModel.of(carsDto));
         ResultActions result = mockMvc.perform(get(urlCar, accept(MediaType.APPLICATION_JSON)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("_embedded.cars[0].brand", is("Alfa Romeo")))
+                .andExpect(jsonPath("_embedded.cars[0].vehicleYear", is(2011)))
+                .andExpect(jsonPath("_embedded.cars[0].engineCapacity", is(1300)))
+                .andExpect(jsonPath("_embedded.cars[0].doors", is(3)))
+                .andExpect(jsonPath("_embedded.cars[0].fuel", is("Diesel")))
                 .andDo(print());
     }
 
@@ -128,59 +134,39 @@ class GarageApplicationTests {
     }
 
     @Test
-    void testResBodyGetCars() {
+    void testResponseBodyVehicleArgsNotAcceptedAdvice() throws Exception {
+        try {
+            MvcResult result = mockMvc.perform(post(urlCar).contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(new CarDto(null, "Alfa Romeo", 2011, 1300, Doors.createDoors(1), Fuel.DIESEL)))
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andReturn();
+        } catch (RuntimeException result) {
+            RuntimeException ex = new VehicleArgsNotAcceptedException("The value of doors must be between 3 or 5.");
+            System.out.println(result);
+            assertEquals(ex.getMessage(), result.getMessage());
+        }
+    }
 
+    @Test
+    void testResponseBodyVehicleArgsNotAcceptedAdvice2() throws Exception {
+        try {
+            MvcResult result = mockMvc.perform(post(urlCar).contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(new CarDto(null, "Alfa Romeo", 2011, 1300, Doors.createDoors(1), Fuel.DIESEL)))
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andReturn();
+        } catch (RuntimeException result) {
+            RuntimeException ex = new VehicleArgsNotAcceptedException("The value of doors must be between 3 or 5.");
+            System.out.println(result);
+            assertEquals(ex.getMessage(), result.getMessage());
+        }
     }
 
 }
 
-//    private HttpResponse httpResponse;
-//    private String url;
-//    private Car car;
-//    private CarDto carDto;
-//
-//    @Autowired
-//    private MockMvc mockMvc;
-//    @Autowired
-//    ObjectMapper objectMapper;
-//
-//    @MockBean
-//    private CarRepository carRepository; //final
-//    @MockBean
-//    private CarServiceImpl carService;
-//
-//    @BeforeEach
-//    void beforeEach() {
-//        url = "http://localhost:8080/garage/cars";
-//        car = new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL);
-//        carDto = CarDto.builder()
-//                .brand(car.getBrand())
-//                .vehicleYear(car.getVehicleYear())
-//                .engineCapacity(car.getEngineCapacity())
-//                .doors(Doors.createDoors(car.getDoors()))
-//                .fuel(car.getFuel())
-//                .build();
-//        carRepository.save(car);
-//    }
 //
 //    //Integration test (need the application context to be loaded)
 //    //1) controller/business layer
 //    //Status code
-//    @Test
-//    void testStatusCodeFoundGetCars() throws Exception {
-//        mockMvc.perform(get(url))
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//    }
-//
-//    @Test
-//    void testStatusCodeNotFound() throws Exception { //an error of type i/o;
-//        Long id = 3l;
-//        when(carService.readById(id)).thenReturn(null);
-//        mockMvc.perform(get(url + "/" + id))
-//                .andExpect(status().isNotFound())
-//                .andDo(print());
-//    }
 //
 //    @Test
 //    void testStatusCodeCreateCar() throws Exception {
@@ -207,30 +193,6 @@ class GarageApplicationTests {
 //        mockMvc.perform(delete(url + "/" + id))
 //                .andExpect(status().isNotFound())
 //                .andDo(print());
-//    }
-//
-//    @Test
-//    void testResponseBodyVehicleNotFoundAdvice() throws IOException {
-//        Long id = Long.valueOf(30);
-//        httpResponse = HttpClientBuilder.create().build().execute(new HttpGet(url + "/" + id));
-//        HttpEntity entity = httpResponse.getEntity();
-//        String resBody = EntityUtils.toString(entity, "UTF-8");
-//        Exception ex = new VehicleNotFoundException(id);
-//        assertEquals(ex.getMessage(), resBody);
-//    }
-//
-//    @Test
-//    void testResponseBodyVehicleArgsNotAcceptedAdvice() throws Exception {
-//        try {
-//            MvcResult result = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
-//                            .content(objectMapper.writeValueAsString(new CarDto(null, "Alfa Romeo", 2011, 1300, Doors.createDoors(1), Fuel.DIESEL)))
-//                            .accept(MediaType.APPLICATION_JSON))
-//                    .andReturn();
-//        } catch (RuntimeException result) {
-//            RuntimeException ex = new VehicleArgsNotAcceptedException("The value of doors must be between 3 or 5.");
-//            System.out.println(result);
-//            assertEquals(ex.getMessage(), result.getMessage());
-//        }
 //    }
 //
 //    //2) persistence/service layer
