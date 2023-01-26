@@ -79,19 +79,20 @@ class GarageApplicationTests {
 
     @BeforeEach
     void setup() {
-        car = new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL);
+        car = new Car("Fiat", 2011, 1200, Doors.createDoors(3), Fuel.DIESEL);
         carRepository.save(car);
-        CarDto.builder()
+        carDto = CarDto.builder()
+                .id(car.getId())
                 .brand(car.getBrand())
-                .vehicleYear(car.getVehicleYear())
                 .engineCapacity(car.getEngineCapacity())
-                .doors(Doors.createDoors(car.getDoors()))
+                .vehicleYear(car.getVehicleYear())
                 .fuel(car.getFuel())
+                .doors(Doors.createDoors(car.getDoors()))
                 .build();
     }
 
     //Integration test
-    //1) controller/business layer
+    //1) service layer
     @Test
     void testStatusCodeOkAndMatchObjRepoGetCars() throws Exception {
         CarModelAssembler carModelAssembler = new CarModelAssembler();
@@ -121,8 +122,51 @@ class GarageApplicationTests {
                 .andDo(print());
     }
 
+
     @Test
-        //need application is working
+    void testStatusCodeCreatedCreate() throws Exception {
+        when(carService.create(carDto)).thenReturn(carDto);
+        ResultActions result = mockMvc.perform(post(urlCar)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(carDto))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.brand", is("Fiat")))
+                .andDo(print());
+    }
+
+    @Test
+    void testStatusCodeInvalidValueCreate() throws Exception {
+    }
+
+    @Test
+    void testStatusCodeOkUpdateAndMatchObj() throws Exception {
+
+    }
+
+    @Test
+    void testStatusCodeNotFoundUpdate() throws Exception {
+
+    }
+
+    @Test
+    void testStatusCodeAcceptedDelete() throws Exception {
+        CarModelAssembler carModelAssembler = new CarModelAssembler();
+        Long id = 2L;
+        carModelAssembler.toModel(carDto);
+        when(carService.readById(id)).thenReturn(EntityModel.of(carDto));
+        ResultActions result = mockMvc.perform(delete(urlCar + "/" + id).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted())
+                .andDo(print());
+    }
+
+    @Test
+    void testStatusCodeNotFoundDelete() throws Exception {
+
+    }
+
+    @Test
+        //need application is working || can it be a test?
     void testResponseBodyVehicleNotFoundAdvice() throws IOException {
         Long id = 30L;
         httpResponse = HttpClientBuilder.create().build().execute(new HttpGet(urlCar + "/" + id));
@@ -147,40 +191,11 @@ class GarageApplicationTests {
         }
     }
 
+    //2) Persistence/service layer
 
 }
 
-//
-//    //Integration test (need the application context to be loaded)
-//    //1) controller/business layer
-//    //Status code
-//
-//    @Test
-//    void testStatusCodeCreateCar() throws Exception {
-//        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(carDto))
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isCreated())
-//                .andDo(print());
-//    }
-//
-//    @Test
-//    void testStatusCodeFoundDeleteCar() throws Exception {
-//        Long id = 1l;
-//        //Car car = new Car("Alfa Romeo", 2011, 1300, Doors.createDoors(3), Fuel.DIESEL);
-//        carRepository.save(car);
-//        mockMvc.perform(delete(url + "/" + id))
-//                .andExpect(status().isAccepted())
-//                .andDo(print());
-//    }
-//
-//    @Test
-//    void testStatusCodeNotFoundDeleteCar() throws Exception {
-//        Long id = 2l;
-//        mockMvc.perform(delete(url + "/" + id))
-//                .andExpect(status().isNotFound())
-//                .andDo(print());
-//    }
+
 //
 //    //2) persistence/service layer
 //
