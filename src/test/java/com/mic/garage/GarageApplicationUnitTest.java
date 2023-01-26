@@ -40,7 +40,7 @@ public class GarageApplicationUnitTest {
     private CarServiceImpl carService;
 
     @Test
-    public void testVehicleNotFoundException() {
+    public void testVehicle_NotFound_Exception() {
         Long id = 2l;
         RuntimeException ex = new VehicleNotFoundException(id);
         String message= "Could not find vehicle "+id;
@@ -49,7 +49,7 @@ public class GarageApplicationUnitTest {
     }
 
     @Test
-    public void testVehicleArgsNotAcceptedException(){
+    public void testVehicle_ArgsNotAccepted_Exception(){
         RuntimeException ex = new VehicleArgsNotAcceptedException("work?");
         String msg = "work?";
         String msgFail = "not work";
@@ -59,7 +59,7 @@ public class GarageApplicationUnitTest {
     }
 
     @Test
-    void testStatusCodeNotFoundGetOneCar() throws Exception {
+    void testStatusCode_NotFound_GetOneCar() throws Exception {
         Long id = 3L; //by mocking the service, doesn't throw error by itself
         given(carService.readById(id)).willThrow(new VehicleNotFoundException(id));
         ResultActions result = mockMvc.perform(get(urlCar + "/" + id))

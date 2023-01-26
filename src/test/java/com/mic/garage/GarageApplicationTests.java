@@ -66,6 +66,7 @@ class GarageApplicationTests {
     String urlCar = "http://localhost:8080/garage/cars";
     Car car;
     CarDto carDto;
+    CarModelAssembler carModelAssembler;
 
     @Autowired
     MockMvc mockMvc;
@@ -79,6 +80,7 @@ class GarageApplicationTests {
 
     @BeforeEach
     void setup() {
+        carModelAssembler = new CarModelAssembler();
         car = new Car("Fiat", 2011, 1200, Doors.createDoors(3), Fuel.DIESEL);
         carRepository.save(car);
         carDto = CarDto.builder()
@@ -92,10 +94,9 @@ class GarageApplicationTests {
     }
 
     //Integration test
-    //1) service layer
+    //1) web & service layer
     @Test
-    void testStatusCodeOkAndMatchObjRepoGetCars() throws Exception {
-        CarModelAssembler carModelAssembler = new CarModelAssembler();
+    void testStatusCode_Ok_MatchObjRepo_GetCars() throws Exception {
         Stream<CarDto> carsStream = carRepository.findAll().stream()
                 .map(car -> new CarDto(car.getId(), car.getBrand(), car.getVehicleYear(), car.getEngineCapacity(), Doors.createDoors(car.getDoors()), car.getFuel()));
         List<EntityModel<CarDto>> carsDto = carsStream.map(carModelAssembler::toModel)
@@ -113,8 +114,18 @@ class GarageApplicationTests {
     }
 
     @Test
-//is this a unit or an integration test? || unit?
-    void testStatusCodeNotFoundGetOneCar() throws Exception {
+    void testStatusCode_Ok_MatchObjRepo_GetOneCar() throws Exception {
+        Long id = carDto.getId();
+        carModelAssembler.toModel(carDto);
+        when(carService.readById(id)).thenReturn(EntityModel.of(carDto));
+        mockMvc.perform(get(urlCar + "/" + id).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.brand", is("Fiat")))
+                .andDo(print());
+    }
+
+    @Test
+    void testStatusCode_NotFound_GetOneCar() throws Exception { //is this a unit or an integration test? || unit?
         Long id = 3L; //by mocking the service, doesn't throw error by itself
         given(carService.readById(id)).willThrow(new VehicleNotFoundException(id));
         ResultActions result = mockMvc.perform(get(urlCar + "/" + id))
@@ -124,7 +135,7 @@ class GarageApplicationTests {
 
 
     @Test
-    void testStatusCodeCreatedCreate() throws Exception {
+    void testStatusCode_Created__CreateCar() throws Exception {
         when(carService.create(carDto)).thenReturn(carDto);
         ResultActions result = mockMvc.perform(post(urlCar)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -135,23 +146,22 @@ class GarageApplicationTests {
                 .andDo(print());
     }
 
-    @Test
-    void testStatusCodeInvalidValueCreate() throws Exception {
-    }
+//    @Test
+//    void testStatusCode_InvalidValue_CreateCar() throws Exception {
+//    }
+//
+//    @Test
+//    void testStatusCode_Ok_MatchObjRepo_UpdateCar() throws Exception {
+//
+//    }
+//
+//    @Test
+//    void testStatusCode_NotFound_UpdateCar() throws Exception {
+//
+//    }
 
     @Test
-    void testStatusCodeOkUpdateAndMatchObj() throws Exception {
-
-    }
-
-    @Test
-    void testStatusCodeNotFoundUpdate() throws Exception {
-
-    }
-
-    @Test
-    void testStatusCodeAcceptedDelete() throws Exception {
-        CarModelAssembler carModelAssembler = new CarModelAssembler();
+    void testStatusCode_Accepted_DeleteCar() throws Exception {
         Long id = 2L;
         carModelAssembler.toModel(carDto);
         when(carService.readById(id)).thenReturn(EntityModel.of(carDto));
@@ -160,10 +170,10 @@ class GarageApplicationTests {
                 .andDo(print());
     }
 
-    @Test
-    void testStatusCodeNotFoundDelete() throws Exception {
-
-    }
+//    @Test
+//    void testStatusCodeNotFoundDelete() throws Exception {
+//
+//    }
 
     @Test
         //need application is working || can it be a test?
