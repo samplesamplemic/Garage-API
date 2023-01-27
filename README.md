@@ -62,8 +62,7 @@ Pattern used:
 
 ### Testing:
 
-- Integration test: [Mockito][mockito-url]. I divided this part into two section: business layer tests and
-  persistence/service layer tests;
+- Integration test: [Mockito][mockito-url]
 - Unit test: [JUnit-5][junit-url]
 
 <!-- MARKDOWN LINKS & IMAGES -->

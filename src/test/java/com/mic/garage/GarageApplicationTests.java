@@ -32,6 +32,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -82,7 +83,7 @@ class GarageApplicationTests {
     void setup() {
         carModelAssembler = new CarModelAssembler();
         car = new Car("Fiat", 2011, 1200, Doors.createDoors(3), Fuel.DIESEL);
-        carRepository.save(car);
+        //carRepository.save(car);
         carDto = CarDto.builder()
                 .id(car.getId())
                 .brand(car.getBrand())
@@ -115,6 +116,8 @@ class GarageApplicationTests {
 
     @Test
     void testStatusCode_Ok_MatchObjRepo_GetOneCar() throws Exception {
+        carRepository.save(car);
+        carDto.setId(car.getId());
         Long id = carDto.getId();
         carModelAssembler.toModel(carDto);
         when(carService.readById(id)).thenReturn(EntityModel.of(carDto));
@@ -146,19 +149,22 @@ class GarageApplicationTests {
                 .andDo(print());
     }
 
-//    @Test
-//    void testStatusCode_InvalidValue_CreateCar() throws Exception {
-//    }
-//
-//    @Test
-//    void testStatusCode_Ok_MatchObjRepo_UpdateCar() throws Exception {
-//
-//    }
-//
-//    @Test
-//    void testStatusCode_NotFound_UpdateCar() throws Exception {
-//
-//    }
+    @Test
+    void testStatusCode_Ok_MatchObjRepo_UpdateCar() throws Exception {
+        carRepository.save(car);
+        carDto.setId(car.getId());
+        carDto.setBrand("BMW");
+        carDto.setVehicleYear(2006);
+        when(carService.update(carDto, carDto.getId())).thenReturn(carDto);
+        ResultActions result = mockMvc.perform(put(urlCar + "/" + carDto.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(carDto))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.brand", is("BMW")))
+                .andExpect(jsonPath("$.vehicleYear", is(2006)))
+                .andDo(print());
+    }
 
     @Test
     void testStatusCode_Accepted_DeleteCar() throws Exception {
@@ -170,14 +176,9 @@ class GarageApplicationTests {
                 .andDo(print());
     }
 
-//    @Test
-//    void testStatusCodeNotFoundDelete() throws Exception {
-//
-//    }
-
     @Test
         //need application is working || can it be a test?
-    void testResponseBodyVehicleNotFoundAdvice() throws IOException {
+    void testResponseBody_Vehicle_NotFound_Advice() throws IOException {
         Long id = 30L;
         httpResponse = HttpClientBuilder.create().build().execute(new HttpGet(urlCar + "/" + id));
         HttpEntity entity = httpResponse.getEntity();
@@ -188,7 +189,7 @@ class GarageApplicationTests {
     }
 
     @Test
-    void testResponseBodyVehicleArgsNotAcceptedAdvice() throws Exception {
+    void testResponseBody_Vehicle_ArgsNotAccepted_Advice() throws Exception {
         try {
             MvcResult result = mockMvc.perform(post(urlCar).contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(new CarDto(null, "Alfa Romeo", 2011, 1300, Doors.createDoors(1), Fuel.DIESEL)))
@@ -201,23 +202,6 @@ class GarageApplicationTests {
         }
     }
 
-    //2) Persistence/service layer
-
 }
 
-
-//
-//    //2) persistence/service layer
-//
-//    @Test
-//    void testCreateCar() throws Exception {
-//
-//        MvcResult result = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(carDto))
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andReturn();
-//        //assertThat(carRepository.findById(4l).isPresent()); not work, return always true;
-//    }
-
-//}
 

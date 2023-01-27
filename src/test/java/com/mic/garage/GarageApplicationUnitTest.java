@@ -4,6 +4,7 @@ package com.mic.garage;
 import com.mic.garage.controller.CarController;
 import com.mic.garage.controller.MotoController;
 import com.mic.garage.controller.VanController;
+import com.mic.garage.entity.Doors;
 import com.mic.garage.exception.VehicleArgsNotAcceptedException;
 import com.mic.garage.exception.VehicleNotFoundException;
 import com.mic.garage.repository.MotoRepository;
@@ -26,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-
 @WebMvcTest(CarController.class)
 public class GarageApplicationUnitTest {
 
@@ -35,7 +35,6 @@ public class GarageApplicationUnitTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     @MockBean
     private CarServiceImpl carService;
 
@@ -43,19 +42,19 @@ public class GarageApplicationUnitTest {
     public void testVehicle_NotFound_Exception() {
         Long id = 2l;
         RuntimeException ex = new VehicleNotFoundException(id);
-        String message= "Could not find vehicle "+id;
+        String message = "Could not find vehicle " + id;
         //RuntimeException exCompared = new RuntimeException(message);
         assertEquals(message, ex.getMessage());
     }
 
     @Test
-    public void testVehicle_ArgsNotAccepted_Exception(){
+    public void testVehicle_ArgsNotAccepted_Exception() {
         RuntimeException ex = new VehicleArgsNotAcceptedException("work?");
         String msg = "work?";
         String msgFail = "not work";
         assertEquals(msg, ex.getMessage());
         assertTrue(msg == ex.getMessage());
-        assertFalse(msgFail== ex.getMessage());
+        assertFalse(msgFail == ex.getMessage());
     }
 
     @Test
@@ -67,9 +66,16 @@ public class GarageApplicationUnitTest {
                 .andDo(print());
     }
 
-    //test toString method
-    //get and set method?
-    //self-validation in VO?
+    //self-validation in VO
+    @Test
+    void testValidation_DoorsClass() {
+        try {
+            Doors.createDoors(2);
+        } catch (Exception e) {
+            RuntimeException newEx = new VehicleArgsNotAcceptedException("The value of doors must be between 3 or 5.");
+            assertTrue(newEx.getMessage() == e.getMessage());
+        }
+    }
 }
 
 
