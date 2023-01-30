@@ -1,11 +1,14 @@
 package com.mic.garage.config;
 
+import com.mic.garage.entity.Fuel;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Arrays;
 
 //Configuration of schema exposed by OpenAPI/Swagger
 @Configuration
@@ -34,7 +37,7 @@ public class DocsConfiguration {
                         .addSchemas("Car", new Schema()
                                 .addAllOfItem(new Schema().$ref("#/components/schemas/Vehicle"))
                                 .addProperty("doors", new IntegerSchema().example(0).description("The number of doors must be 3 or 5"))
-                                .addProperty("fuel", new StringSchema().example("Diesel/Petrol").description("The fuel must be diesel or petrol")))
+                                .addProperty("fuel", new StringSchema()._enum(Arrays.asList(Fuel.DIESEL.getFuel(), Fuel.PETROL.toString())).example(Fuel.DIESEL.getFuel()).description("The fuel must be diesel or petrol")))
                         .addSchemas("CarWithId", new Schema<>()
                                 .addProperty("id", new IntegerSchema().example(0))
                                 .addAllOfItem(new Schema<>().$ref("#/components/schemas/Car")))

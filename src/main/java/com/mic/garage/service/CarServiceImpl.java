@@ -45,8 +45,6 @@ public class CarServiceImpl implements VehicleService<CarDto> {
                 .build();
     }
 
-    //Am I breaking single responsibility principle?? The service manages the persistence layer and
-    //applies the assembler;
     @Override
     public CollectionModel<EntityModel<CarDto>> readAll() {
         Stream<CarDto> cars = carRepository.findAll().stream()

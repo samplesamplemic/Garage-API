@@ -23,7 +23,7 @@ public class CarController {
     private final CarServiceImpl carService;
 
     public CarController(CarServiceImpl carService) {
-       this.carService = carService;
+        this.carService = carService;
     }
 
     @Operation(summary = "Create a new vehicle")
@@ -45,7 +45,8 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found list of vehicles",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(ref = "#/components/schemas/getAllCar"))})
+                            schema = @Schema(ref = "#/components/schemas/getAllCars"))})
+
     })
     @GetMapping("/cars")
     //<CollectionModel<>>: Spring Hateoas container - it's aimed to encapsulating collection of resource

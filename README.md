@@ -13,7 +13,7 @@ microservices with Spring Framework faster and easier.
 \
 **Database**: [h2][h2-url], the java SQL in-memory database.
 \
-**Testing**: The testing area need to be improved. Integration test: <i>[Mockito][mockito-url]</i> || Unit Test: <i>[JUnit-5][junit-url]</i>
+**Testing**: The testing area need to be improved. Integration test:  || Unit Test: <i>[JUnit-5][junit-url]</i> - <i>[Mockito][mockito-url]</i>
 \
 **Documentation**: [springdoc-openapi][Springdoc-url], java library helps to automate the generation of API
 documentation using spring boot projects.
@@ -62,8 +62,8 @@ Pattern used:
 
 ### Testing:
 
-- Integration test: [Mockito][mockito-url]
-- Unit test: [JUnit-5][junit-url]
+- Integration test: 
+- Unit test: [JUnit-5][junit-url] - [Mockito][mockito-url]
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
