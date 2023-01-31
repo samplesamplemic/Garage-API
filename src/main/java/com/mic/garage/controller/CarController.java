@@ -2,7 +2,6 @@ package com.mic.garage.controller;
 
 import com.mic.garage.model.CarDto;
 import com.mic.garage.service.CarServiceImpl;
-import com.mic.garage.service.assembler.CarModelAssembler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

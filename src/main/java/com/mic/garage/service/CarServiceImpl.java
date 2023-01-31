@@ -13,6 +13,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,7 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service // CarDao
-public class CarServiceImpl implements VehicleService<CarDto> {
+public class CarServiceImpl {
 
     @Autowired
     private CarRepository carRepository;
@@ -31,7 +32,6 @@ public class CarServiceImpl implements VehicleService<CarDto> {
         this.carModelAssembler = carModelAssembler;
     }
 
-    @Override
     public CarDto create(CarDto vehicle) {
         Car car = new Car(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getDoors(), vehicle.getFuel());
         carRepository.save(car);
@@ -45,7 +45,6 @@ public class CarServiceImpl implements VehicleService<CarDto> {
                 .build();
     }
 
-    @Override
     public CollectionModel<EntityModel<CarDto>> readAll() {
         Stream<CarDto> cars = carRepository.findAll().stream()
                 .map(car -> new CarDto(car.getId(), car.getBrand(), car.getVehicleYear(), car.getEngineCapacity(), Doors.createDoors(car.getDoors()), car.getFuel()));
@@ -54,7 +53,6 @@ public class CarServiceImpl implements VehicleService<CarDto> {
         return CollectionModel.of(carsDto, linkTo(methodOn(CarController.class).getAllCars()).withSelfRel());
     }
 
-    @Override
     public EntityModel<CarDto> readById(Long id) {
         Car car = carRepository.findById(id)
                 .orElseThrow(() -> new VehicleNotFoundException(id));
@@ -62,7 +60,6 @@ public class CarServiceImpl implements VehicleService<CarDto> {
         return carModelAssembler.toModel(carDto);
     }
 
-    @Override
     public CarDto update(CarDto vehicle, Long id) {
         var carDto = carRepository.findById(id)
                 .map(car -> {
@@ -86,7 +83,7 @@ public class CarServiceImpl implements VehicleService<CarDto> {
                 .build();
     }
 
-    @Override
+
     public void delete(Long id) {
         carRepository.findById(id)
                 .orElseThrow(() -> new VehicleNotFoundException(id));
