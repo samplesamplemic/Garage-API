@@ -1,9 +1,6 @@
 package com.mic.garage;
 
 
-import com.mic.garage.controller.CarController;
-import com.mic.garage.controller.MotoController;
-import com.mic.garage.controller.VanController;
 import com.mic.garage.entity.Car;
 import com.mic.garage.entity.Doors;
 import com.mic.garage.entity.Fuel;
@@ -11,44 +8,25 @@ import com.mic.garage.exception.VehicleArgsNotAcceptedException;
 import com.mic.garage.exception.VehicleNotFoundException;
 import com.mic.garage.model.CarDto;
 import com.mic.garage.repository.CarRepository;
-import com.mic.garage.repository.MotoRepository;
-import com.mic.garage.repository.VanRepository;
 import com.mic.garage.service.CarServiceImpl;
 import com.mic.garage.service.assembler.CarModelAssembler;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 public class GarageApplicationUnitTest {
@@ -79,7 +57,7 @@ public class GarageApplicationUnitTest {
     }
 
     @Test
-    void Create_return_oneCar(){
+    void Create_return_oneCar() {
         lenient().when(carRepository.findById(anyLong())).thenReturn(Optional.empty());
         lenient().when(carRepository.save(car)).thenReturn(car);
         CarDto carDtoMatch = carService.create(carDto);
@@ -88,10 +66,9 @@ public class GarageApplicationUnitTest {
     }
 
     @Test
-    void FindById_return_oneCar() {
+    void FindById_return_oneCar_byId() {
         when(carRepository.findById(anyLong())).thenReturn(Optional.of(car));
         //when(carService.readById(anyLong())).thenReturn(EntityModel.of(carDto));
-
         EntityModel<CarDto> carDto = carService.readById(id);
         assertThat(carDto.getContent().getVehicleYear()).isEqualTo(2011);
         verify(carRepository, times(1)).findById(id);
@@ -111,7 +88,7 @@ public class GarageApplicationUnitTest {
     }
 
     @Test
-    void Update_should_update_OneCar_byId() {
+    void Update_should_update_oneCar_byId() {
         when(carRepository.findById(anyLong())).thenReturn(Optional.of(car));
         when(carRepository.save(car)).thenReturn(car);
 
@@ -121,7 +98,7 @@ public class GarageApplicationUnitTest {
     }
 
     @Test
-    void Delete_should_delete_onCar_byId() {
+    void Delete_should_delete_oneCar_byId() {
         when(carRepository.findById(anyLong())).thenReturn(Optional.of(car));
         System.out.println(carService.readById(1L));
         doNothing().when(carRepository).deleteById(anyLong());
