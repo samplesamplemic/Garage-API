@@ -21,7 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service // CarDao
-public class CarServiceImpl {
+public class CarServiceImpl implements VehicleService<CarDto> {
 
     @Autowired
     private CarRepository carRepository;
@@ -32,6 +32,7 @@ public class CarServiceImpl {
         this.carModelAssembler = carModelAssembler;
     }
 
+    @Override
     public CarDto create(CarDto vehicle) {
         Car car = new Car(vehicle.getBrand(), vehicle.getVehicleYear(), vehicle.getEngineCapacity(), vehicle.getDoors(), vehicle.getFuel());
         carRepository.save(car);
@@ -45,6 +46,7 @@ public class CarServiceImpl {
                 .build();
     }
 
+    @Override
     public CollectionModel<EntityModel<CarDto>> readAll() {
         Stream<CarDto> cars = carRepository.findAll().stream()
                 .map(car -> new CarDto(car.getId(), car.getBrand(), car.getVehicleYear(), car.getEngineCapacity(), Doors.createDoors(car.getDoors()), car.getFuel()));
@@ -53,6 +55,7 @@ public class CarServiceImpl {
         return CollectionModel.of(carsDto, linkTo(methodOn(CarController.class).getAllCars()).withSelfRel());
     }
 
+    @Override
     public EntityModel<CarDto> readById(Long id) {
         Car car = carRepository.findById(id)
                 .orElseThrow(() -> new VehicleNotFoundException(id));
@@ -60,6 +63,7 @@ public class CarServiceImpl {
         return carModelAssembler.toModel(carDto);
     }
 
+    @Override
     public CarDto update(CarDto vehicle, Long id) {
         var carDto = carRepository.findById(id)
                 .map(car -> {

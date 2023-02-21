@@ -58,6 +58,7 @@ public class GarageApplicationUnitTest {
 
     @Test
     void Create_return_oneCar() {
+        //lenient() bypass Error:strictStubbing || unnecessary stub
         lenient().when(carRepository.findById(anyLong())).thenReturn(Optional.empty());
         lenient().when(carRepository.save(car)).thenReturn(car);
         CarDto carDtoMatch = carService.create(carDto);
